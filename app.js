@@ -1,5 +1,5 @@
 // Jasper
-// A simple bot that emails you when specified webconfig.pages are down
+// A simple bot that emails you when specified pages are down
 // Created by TJ Hillard - Nov 21 2015
 
 /*jslint node: true */
