@@ -1,5 +1,7 @@
-# status-bot-node
+# Jasper
 A simple bot that emails you when specified webpages are down.
+
+![JasperDemo](http://i.imgur.com/uYn5sSM.png)
 
 ## Usage
 1. Install all of the project dependencies via
