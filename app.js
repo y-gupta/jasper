@@ -75,10 +75,10 @@ pages.forEach(function(val) {
       successes++;
     }
     else if (
-        response.statusCode != 201 ||
-        response.statusCode != 400 ||
-        response.statusCode != 401 ||
-        response.statusCode != 404 ||
+        response.statusCode != 201 &&
+        response.statusCode != 400 &&
+        response.statusCode != 401 &&
+        response.statusCode != 404 &&
         response.statusCode != 500) {
       console.log(colors.yellow(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       warnings++;
