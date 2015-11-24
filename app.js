@@ -48,16 +48,13 @@ config.pages.forEach(function(val) {
     counter++;
     let requestTime = (new Date().getTime()) - startTime;
 
+    let warningCodes = [201, 400, 401, 404, 500];
+
     if (response.statusCode == 200) {
       console.log(colors.green(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       successes++;
     }
-    else if (
-        response.statusCode != 201 &&
-        response.statusCode != 400 &&
-        response.statusCode != 401 &&
-        response.statusCode != 404 &&
-        response.statusCode != 500) {
+    else if (warningCodes.indexOf(response.statusCode) === -1) {
       console.log(colors.yellow(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       warnings++;
     }
