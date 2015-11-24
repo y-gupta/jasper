@@ -47,17 +47,13 @@ config.pages.forEach(function(val) {
   }, function(error, response, body) {
     counter++;
     let requestTime = (new Date().getTime()) - startTime;
+    let warningCodes = [201, 400, 401, 404, 500];
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 304) {
       console.log(colors.green(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       successes++;
     }
-    else if (
-        response.statusCode != 201 &&
-        response.statusCode != 400 &&
-        response.statusCode != 401 &&
-        response.statusCode != 404 &&
-        response.statusCode != 500) {
+    else if (warningCodes.indexOf(response.statusCode) === -1) {
       console.log(colors.yellow(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       warnings++;
     }
@@ -71,23 +67,6 @@ config.pages.forEach(function(val) {
 
 // Check if all async opertations are complete every quarter second
 var isFinished = setInterval(function() {
-
-  // nodemailer
-  var transporter = nodemailer.createTransport({
-      service: 'Gmail',
-      auth: {
-          user: config.email.auth.emailAddress,
-          pass: config.email.auth.password
-      }
-  });
-
-  var mailOptions = {
-      from: config.bot.name + ' ' + emoji.get(config.bot.emoji),
-      to: config.email.recipients, // List of email recipients
-      subject: errors + ' issue(s) detected with ' + config.main.baseUrl , // Subject line
-      html: emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + errors + ' issue(s) with ' + '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
-      'The following config.pages are showing errors.</span><br><br>' + failedPages// HTML body
-  };
 
   if (counter === config.pages.length) {
     console.log(colors.underline('\nDone!' + '\n'));
@@ -112,20 +91,53 @@ var isFinished = setInterval(function() {
     );
 
     // If there are errors and email is turned on in config, Jasper will send an email!
+    // ----- nodemailer ------
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: config.email.auth.emailAddress,
+            pass: config.email.auth.password
+        }
+    });
+
+    var mailOptions = {
+        from: config.bot.name + ' ' + emoji.get(config.bot.emoji),
+        to: config.email.recipients, // List of email recipients
+        subject: errors + ' issue(s) detected with ' + config.main.baseUrl , // Subject line
+        html: emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + errors + ' issue(s) with ' + '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
+        'The following config.pages are showing errors.</span><br><br>' + failedPages// HTML body
+    };
+
     if (errors > 0 && config.main.emailNotifications) {
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           return console.log(error);
         }
-        console.log(emoji.get(config.bot.emoji) + ' ' + config.bot.name + ' will be in touch soon!\nMessage Sent: ' + info.response);
+        else {
+          console.log(emoji.get(config.bot.emoji) + ' ' + config.bot.name + ' will be in touch soon!\nMessage Sent: ' + info.response);
+        }
       });
     }
-    else if (errors > 0 && !config.main.emailNotifications) {
-      // There are errors, but 'config.main.emailNotifications' is turned off via config. Do nothing.
-    }
-    else {
-      // If no errors, do nothing
-      console.log('Everything is looking good!');
+
+
+    // ----- HipChat ------
+    if (config.main.hipchatNotifications) {
+      var HipChatClient = require('hipchat-client');
+      var hipchat = new HipChatClient(config.hipchat.token);
+
+      if (errors > 0) {
+        hipchat.api.rooms.message({
+          room_id: 'Jasperio',
+          from: 'Jasper',
+          message: emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + errors + ' issue(s) with ' + '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
+          'The following config.pages are showing errors.</span><br><br>' + failedPages
+        }, function (err, res) {
+          if (err) { throw err; }
+          else if (res.status === 'sent') {
+            console.log('HipChat Message Sent!');
+          }
+        });
+      }
     }
 
     clearInterval(isFinished);
