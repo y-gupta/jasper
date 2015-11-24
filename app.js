@@ -47,10 +47,9 @@ config.pages.forEach(function(val) {
   }, function(error, response, body) {
     counter++;
     let requestTime = (new Date().getTime()) - startTime;
-
     let warningCodes = [201, 400, 401, 404, 500];
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 304) {
       console.log(colors.green(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       successes++;
     }

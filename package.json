@@ -15,5 +15,8 @@
     "node-persist": "0.0.8",
     "nodemailer": "^1.10.0",
     "request": "^2.65.0"
+  },
+  "devDependencies": {
+    "slackhook": "^1.0.0"
   }
 }
