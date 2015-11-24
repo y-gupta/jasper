@@ -73,7 +73,11 @@ var email = {
 // ----- HipChat Config ------
 
 var hipchat = {
-  token: '507f4138ffc70635cecf2646218004'
+
+  // When logged in, go to https://<yourteamname>.hipchat.com/admin/api
+  // Register a new Admin Auth Token, and paste here!
+  token: ''
+
 };
 
 
