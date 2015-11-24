@@ -1,7 +1,7 @@
 ![travis](https://travis-ci.org/tjhillard/jasper.svg?branch=develop)
 
-# Jasper :tophat:
-A simple bot that notifies you when specified webpages are down.
+# Jasper
+:tophat: A simple bot that notifies you when specified webpages are down.
 
 ![JasperDemo](http://i.imgur.com/uYn5sSM.png)
 
