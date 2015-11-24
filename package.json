@@ -17,6 +17,7 @@
     "request": "^2.65.0"
   },
   "devDependencies": {
+    "hipchat-client": "^1.0.4",
     "slackhook": "^1.0.0"
   }
 }

@@ -15,7 +15,10 @@ var main = {
 
   // Do you want to send email notifications?
   // Yes -> true      No -> false
-  emailNotifications: false
+  emailNotifications: false,
+
+  // Do you want to activate HipChat notifications?
+  hipchatNotifications: true
 
 };
 
@@ -67,7 +70,15 @@ var email = {
 };
 
 
+// ----- HipChat Config ------
+
+var hipchat = {
+  token: '507f4138ffc70635cecf2646218004'
+};
+
+
 exports.main = main;
 exports.pages = pages;
 exports.bot = bot;
 exports.email = email;
+exports.hipchat = hipchat;
