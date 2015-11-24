@@ -127,8 +127,8 @@ var isFinished = setInterval(function() {
 
       if (errors > 0) {
         hipchat.api.rooms.message({
-          room_id: 'Jasperio',
-          from: 'Jasper',
+          room_id: config.hipchat.room,
+          from: config.bot.name,
           message: emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + errors + ' issue(s) with ' + '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
           'The following config.pages are showing errors.</span><br><br>' + failedPages
         }, function (err, res) {

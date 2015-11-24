@@ -76,7 +76,10 @@ var hipchat = {
 
   // When logged in, go to https://<yourteamname>.hipchat.com/admin/api
   // Register a new Admin Auth Token, and paste here!
-  token: ''
+  token: '',
+
+  // Room ID that you want to send the message to
+  room: ''
 
 };
 
