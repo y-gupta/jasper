@@ -9,7 +9,6 @@
 var util = require('util');
 var request = require('request');
 var colors = require('colors');
-var nodemailer = require('nodemailer');
 var emoji = require('node-emoji');
 var storage = require('node-persist');
   storage.initSync();
@@ -44,26 +43,28 @@ config.pages.forEach(function(val) {
   request({
     url: config.main.baseUrl + val,
     json: false
-  }, function(error, response, body) {
-    counter++;
-    let requestTime = (new Date().getTime()) - startTime;
-    let warningCodes = [201, 400, 401, 404, 500];
+  },
+    // Callback
+    function(error, response, body) {
+      counter++;
+      let requestTime = (new Date().getTime()) - startTime;
+      let warningCodes = [201, 400, 401, 404, 500];
 
-    if (response.statusCode == 200 || response.statusCode == 304) {
-      console.log(colors.green(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
-      successes++;
-    }
-    else if (warningCodes.indexOf(response.statusCode) === -1) {
-      console.log(colors.yellow(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
-      warnings++;
-    }
-    else {
-      console.log(colors.red(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
-      errors++;
-      failedPages.push(val);
-    }
+      if (response.statusCode == 200 || response.statusCode == 304) {
+        console.log(colors.green(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
+        successes++;
+      }
+      else if (warningCodes.indexOf(response.statusCode) === -1) {
+        console.log(colors.yellow(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
+        warnings++;
+      }
+      else {
+        console.log(colors.red(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
+        errors++;
+        failedPages.push(val);
+      }
+    });
   });
-});
 
 // Check if all async opertations are complete every quarter second
 var isFinished = setInterval(function() {
@@ -90,33 +91,39 @@ var isFinished = setInterval(function() {
       }
     );
 
-    // If there are errors and email is turned on in config, Jasper will send an email!
-    // ----- nodemailer ------
-    var transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: config.email.auth.emailAddress,
-            pass: config.email.auth.password
-        }
-    });
+    // ---------- Notifications ----------
+    // ----- Email ------
+    if (config.main.emailNotifications) {
+      var nodemailer = require('nodemailer');
 
-    var mailOptions = {
-        from: config.bot.name + ' ' + emoji.get(config.bot.emoji),
-        to: config.email.recipients, // List of email recipients
-        subject: errors + ' issue(s) detected with ' + config.main.baseUrl , // Subject line
-        html: emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + errors + ' issue(s) with ' + '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
-        'The following config.pages are showing errors.</span><br><br>' + failedPages// HTML body
-    };
-
-    if (errors > 0 && config.main.emailNotifications) {
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          return console.log(error);
-        }
-        else {
-          console.log(emoji.get(config.bot.emoji) + ' ' + config.bot.name + ' will be in touch soon!\nMessage Sent: ' + info.response);
-        }
+      var transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          auth: {
+              user: config.email.auth.emailAddress,
+              pass: config.email.auth.password
+          }
       });
+
+      var mailOptions = {
+          from: config.bot.name + ' ' + emoji.get(config.bot.emoji),
+          to: config.email.recipients, // List of email recipients
+          subject: errors + ' issue(s) detected with ' + config.main.baseUrl , // Subject line
+          html:
+            emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + errors + ' issue(s) with ' +
+            '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
+          'The following pages are showing errors.</span><br><br>' + failedPages// HTML body
+      };
+
+      if (errors > 0) {
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            return console.log(error);
+          }
+          else {
+            util.log(emoji.get(config.bot.emoji) + ' ' + config.bot.name + ' will be in touch soon!\nEmail Sent: ' + info.response);
+          }
+        });
+      }
     }
 
 
@@ -129,12 +136,49 @@ var isFinished = setInterval(function() {
         hipchat.api.rooms.message({
           room_id: config.hipchat.room,
           from: config.bot.name,
-          message: emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + errors + ' issue(s) with ' + '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
-          'The following config.pages are showing errors.</span><br><br>' + failedPages
-        }, function (err, res) {
-          if (err) { throw err; }
+          message:
+            emoji.get(config.bot.emoji) + config.bot.name +
+            '<span> has detected ' + errors + ' issue(s) with ' +
+            '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
+            'The following pages are showing errors.</span><br><br>' + failedPages
+        },
+          // Callback
+          function (err, res) {
+          if (err) {
+            console.log(err);
+          }
           else if (res.status === 'sent') {
-            console.log('HipChat Message Sent!');
+            util.log('HipChat Message Sent!');
+          }
+        });
+      }
+    }
+
+
+    // ----- Slack -----
+    if (config.main.slackNotifications) {
+      var Slack = require('slack-node');
+
+      if (errors > 0) {
+        var slack = new Slack();
+        slack.setWebhook(config.slack.webhookUri);
+
+        slack.webhook({
+          channel: config.slack.channel,
+          username: config.bot.name,
+          icon_emoji: ":" + config.bot.emoji + ":",
+          text:
+            config.bot.name + ' has detected ' + errors + ' issue(s) with ' + config.main.baseUrl + '.\n' +
+            'The following pages are showing errors.\n' + failedPages
+        }, function(err, response) {
+          if (err) {
+            console.log(err);
+          }
+          else if (response.status == 'ok') {
+            util.log('Slack message successfully sent!');
+          }
+          else {
+            console.log(response);
           }
         });
       }

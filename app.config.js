@@ -18,7 +18,12 @@ var main = {
   emailNotifications: false,
 
   // Do you want to activate HipChat notifications?
-  hipchatNotifications: true
+  // Yes -> true      No -> false
+  hipchatNotifications: false,
+
+  // Do you want to activate Slack notifications?
+  // Yes -> true      No -> false
+  slackNotifications: true
 
 };
 
@@ -84,8 +89,27 @@ var hipchat = {
 };
 
 
+// ----- Slack Config -----
+var slack = {
+
+  // To use the Slack Notifications, you will need to set up an incoming webhook
+  // https://<yourSlackTeam>.slack.com/services/new/incoming-webhook
+  // Once generated, copy the webhookUri and paste here
+  webhookUri: '',
+
+  // What channel do you want the bot to post to?
+  // Example '#general'
+  channel: '',
+
+  // The SlackBot Emoji will automatically use the emoji set in your bot config :)
+
+};
+
+
+
 exports.main = main;
 exports.pages = pages;
 exports.bot = bot;
 exports.email = email;
 exports.hipchat = hipchat;
+exports.slack = slack;
