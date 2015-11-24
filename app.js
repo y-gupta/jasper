@@ -37,7 +37,7 @@ var pages = [
   '/alsonotarealpage'
 ];
 
-// Do you want to send emai notifications?
+// Do you want to send email notifications?
 var emailNotifications = false;  // If true, don't forget to set your email config below!
 
 // ----- Global Variables -----
@@ -75,11 +75,10 @@ pages.forEach(function(val) {
       successes++;
     }
     else if (
-        response.statusCode != 200 &&
-        response.statusCode != 201 &&
-        response.statusCode != 400 &&
-        response.statusCode != 401 &&
-        response.statusCode != 404 &&
+        response.statusCode != 201 ||
+        response.statusCode != 400 ||
+        response.statusCode != 401 ||
+        response.statusCode != 404 ||
         response.statusCode != 500) {
       console.log(colors.yellow(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       warnings++;
@@ -87,7 +86,7 @@ pages.forEach(function(val) {
     else {
       console.log(colors.red(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       errors++;
-      failedPages.push('<li>' + val + ': ' + response.statusCode + '</li>');
+      failedPages.push(val);
     }
   });
 });
@@ -99,8 +98,7 @@ var isFinished = setInterval(function() {
   var transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-          // Gmail needs an account to authorize the messages
-          // It's recommended you use a non-personal account since your password is saved in this file
+          // Gmail needs an account to authorize the messages being sent
           user: '',
           pass: ''
       }
@@ -108,10 +106,10 @@ var isFinished = setInterval(function() {
 
   var mailOptions = {
       from: botName + ' ' + botEmoji + ' ' + botEmail,
-      to: '', // list of recipients
+      to: '', // List of email recipients
       subject: errors + ' issue(s) detected with ' + baseUrl , // Subject line
       html: botEmoji + botName + '<span> has detected ' + errors + ' issue(s) with ' + '<a href="' + baseUrl +  '">' + baseUrl + '</a>.' +
-      'The following pages are showing errors.</span><br><br><ul>' + failedPages + '</ul>'// html body
+      'The following pages are showing errors.</span><br><br>' + failedPages// html body
   };
 
   if (counter === pages.length) {
@@ -122,7 +120,8 @@ var isFinished = setInterval(function() {
     console.log(colors.yellow('Warnings: ' + warnings));
     console.log(colors.green.underline('Success: ' + successes + '\n'));
 
-    // Save data from this run to local storage
+    // Save data from this run to server localStorage
+    // Located in 'Persist' folder, only visible after frist completed run
     storage.setItem(moment(startTime).format('x').toString(),
       {
         time: moment(startTime).format('x'),
@@ -135,7 +134,7 @@ var isFinished = setInterval(function() {
       }
     );
 
-    // If there are errors, send an email via Bot!
+    // If there are errors and email is turned on in config, Jasper will send an email!
     if (errors > 0 && emailNotifications) {
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
@@ -145,11 +144,11 @@ var isFinished = setInterval(function() {
       });
     }
     else if (errors > 0 && !emailNotifications) {
-      // errors, but emailNotifications are turned off via config, do nothing
+      // There are errors, but 'emailNotifications' is turned off via config. Do nothing.
     }
     else {
       // If no errors, do nothing
-      console.log('Everything is looking good! Be back in a bit.');
+      console.log('Everything is looking good!');
     }
 
     clearInterval(isFinished);
