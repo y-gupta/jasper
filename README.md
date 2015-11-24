@@ -8,7 +8,7 @@ A simple bot that emails you when specified webpages are down.
 2. Then, in ```app.js``` start customizing as much as you want!
 
 3. You can run script manually through CLI by running ```node app.js``` while in the directory (emails will still work) or
-you can put the script on an AWS instance to run automatically on an interval. More information and a guide for this are in the works.
+you can put the script on an AWS [lambda](https://console.aws.amazon.com/lambda/) instance to run automatically on a custom set interval. More information and a guide for this are in the works.
 
 ### Required Configuration
 * baseUrl
