@@ -1,10 +1,10 @@
 {
   "name": "ora-status-tool",
-  "version": "1.0.0",
+  "version": "0.2",
   "description": "Simple CLI tool to check the status of certain web pages",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "": ""
   },
   "author": "TJ Hillard",
   "license": "ISC",
