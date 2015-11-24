@@ -1,4 +1,4 @@
-// Node Site StatusBot
+// Jasper
 // A simple bot that emails you when specified webpages are down
 // Created by TJ Hillard - Nov 21 2015
 
@@ -16,9 +16,9 @@ var storage = require('node-persist');
 var moment = require('moment');
 
 // ----- Bot Config -----
-// Give your bot some personality
-var botName = 'SushiBot';
-var botEmoji = emoji.get('sushi');
+// Give your bot some personality to fit your team
+var botName = 'Jasper';
+var botEmoji = emoji.get('tophat');
 var botEmail = 'testbot@gmail.com';
 
 // ----- Global Config -----
@@ -32,7 +32,9 @@ var pages = [
   '/process',
   '/portfolio',
   '/careers',
-  '/blog'
+  '/blog',
+  '/notarealpage404',
+  '/alsonotarealpage'
 ];
 
 // Do you want to send emai notifications?
@@ -85,14 +87,15 @@ pages.forEach(function(val) {
     else {
       console.log(colors.red(val + ': ' + response.statusCode + ' - ' + requestTime + 'ms'));
       errors++;
-      failedPages.push(val);
+      failedPages.push('<li>' + val + ': ' + response.statusCode + '</li>');
     }
   });
 });
 
 // Check if all async opertations are complete every quarter second
 var isFinished = setInterval(function() {
-  // nodemailer - config
+
+  // ----- Email Config -----
   var transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -106,13 +109,13 @@ var isFinished = setInterval(function() {
   var mailOptions = {
       from: botName + ' ' + botEmoji + ' ' + botEmail,
       to: '', // list of recipients
-      subject: errors + ' issue(s) found with ' + baseUrl , // Subject line
-      html: botEmoji + botName + '<span> has found ' + errors + ' issue(s) with ' + '<a href="' + baseUrl +  '">' + baseUrl + '</a>.' +
-      'The following pages are showing errors.</span><br><br>' + failedPages // html body
+      subject: errors + ' issue(s) detected with ' + baseUrl , // Subject line
+      html: botEmoji + botName + '<span> has detected ' + errors + ' issue(s) with ' + '<a href="' + baseUrl +  '">' + baseUrl + '</a>.' +
+      'The following pages are showing errors.</span><br><br><ul>' + failedPages + '</ul>'// html body
   };
 
   if (counter === pages.length) {
-    console.log(colors.underline('\n Done! ' + '\n'));
+    console.log(colors.underline('\nDone!' + '\n'));
 
     console.log(colors.underline('Summary'));
     console.log(colors.red.bold('Errors: ' + errors));
