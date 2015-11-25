@@ -23,7 +23,7 @@ var main = {
 
   // Do you want to activate Slack notifications?
   // Yes -> true      No -> false
-  slackNotifications: true
+  slackNotifications: false
 
 };
 
