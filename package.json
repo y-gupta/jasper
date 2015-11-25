@@ -1,6 +1,6 @@
 {
   "name": "ora-status-tool",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "A simple bot that notifies you when specified webpages are down.",
   "main": "app.js",
   "scripts": {
@@ -10,12 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.1.2",
-    "express": "^4.13.3",
     "hipchat-client": "^1.0.4",
     "moment": "^2.10.6",
     "node-persist": "0.0.8",
     "nodemailer": "^1.10.0",
     "request": "^2.65.0",
-    "slack-node": "^0.1.3"
+    "slack-node": "^0.1.3",
+    "twilio": "^2.5.2"
   }
 }

@@ -23,7 +23,11 @@ var main = {
 
   // Do you want to activate Slack notifications?
   // Yes -> true      No -> false
-  slackNotifications: false
+  slackNotifications: false,
+
+  // Do you want to activate SMS notifications?
+  // Yes -> true      No -> false
+  smsNotifications: false
 
 };
 
@@ -33,6 +37,7 @@ var main = {
 var pages = [
 
   // What pages do you want to test from the baseUrl?
+  // Note: Jasper won't test the base url by itself, set '/' as a page to do that!
   '/',
   '/studio',
   '/process',
@@ -105,6 +110,32 @@ var slack = {
 
 };
 
+var sms = {
+
+  // For SMS you need a Twilio Account
+  // Register at www.twilio.com
+
+  // Account SID, found in your API Dashboard
+  // www.twilio.com/user/account/messaging/dashboard
+  accountSid: '',
+
+  // Auth token, also found in Dashboard
+  // www.twilio.com/user/account/messaging/dashboard
+  authToken: '',
+
+  // Your Twilio Phone Number
+  // www.twilio.com/user/account/messaging/phone-numbers
+  // This will be the number that sends the SMS messages
+  // Example Format: +15132569007
+  twilioPhoneNumber: '',
+
+  // SMS Recipient(s)
+  // Who will be receiving the texts?
+  // Example Format: +15132569007
+  // Note: This must be an array.
+  to: ['']
+
+};
 
 
 exports.main = main;
@@ -113,3 +144,4 @@ exports.bot = bot;
 exports.email = email;
 exports.hipchat = hipchat;
 exports.slack = slack;
+exports.sms = sms;

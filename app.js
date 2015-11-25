@@ -150,6 +150,9 @@ var isFinished = setInterval(function() {
           else if (res.status === 'sent') {
             util.log('HipChat Message Sent!');
           }
+          else {
+            console.log('There was a problem sending the HipChat message.');
+          }
         });
       }
     }
@@ -180,6 +183,36 @@ var isFinished = setInterval(function() {
           else {
             console.log(response);
           }
+        });
+      }
+    }
+
+
+    // ----- SMS (Twilio) -----
+    if (config.main.smsNotifications) {
+      var client = require('twilio')(config.sms.accountSid, config.sms.authToken);
+
+      if (errors > 0) {
+        var recipients = config.sms.to;
+        recipients.forEach(function(recipient) {
+
+          client.sendMessage({
+              to: recipient,
+              from: config.sms.twilioPhoneNumber,
+              body:
+                config.bot.name + ' has detected ' + errors + ' issue(s) with ' + config.main.baseUrl + '.\n' +
+                'The following pages are showing errors.\n' + failedPages
+
+          },
+            function(err, responseData) {
+              if (!err) {
+                  console.log('SMS Sent to: ' + responseData.to);
+              }
+              else {
+                console.log('error sms');
+                console.log(err);
+              }
+          });
         });
       }
     }
