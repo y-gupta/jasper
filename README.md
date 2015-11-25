@@ -3,7 +3,7 @@
 # Jasper
 :tophat: A simple bot that notifies you when specified webpages are down.
 
-![JasperDemo](http://i.imgur.com/v0W8waH.png)
+![JasperDemo](http://i.imgur.com/PUNaX5Y.png)
 
 ## Usage
 1. Install all of the project dependencies via
