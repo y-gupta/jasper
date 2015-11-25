@@ -13,8 +13,7 @@
 
 3. To run the app, type ```npm run jasper```. If you are experiencing issues, try ```npm run doctor```.
 
-4. You can run script manually through CLI by running ```node app.js``` while in the directory or
-you can put the script automatically on an interval via AWS [lambda](https://console.aws.amazon.com/lambda/). More information and a guide for this are in the works.
+**Bonus:** Check out [Lambda](https://console.aws.amazon.com/lambda/) on AWS to run Jasper automatically on a set interval.
 
 ## Notification Options
 * Email
