@@ -17,4 +17,5 @@ you can put the script automatically on an interval via AWS [lambda](https://con
 ## Notification Options
 * Email
 * HipChat
-* Slack 
+* Slack
+* SMS (via Twilio)
