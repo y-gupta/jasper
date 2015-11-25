@@ -119,9 +119,6 @@ var isFinished = setInterval(function() {
           if (error) {
             return console.log(error);
           }
-          else {
-            util.log(emoji.get(config.bot.emoji) + ' ' + config.bot.name + ' will be in touch soon!\nEmail Sent: ' + info.response);
-          }
         });
       }
     }
@@ -178,7 +175,7 @@ var isFinished = setInterval(function() {
             console.log(err);
           }
           else if (response.status == 'ok') {
-            util.log('Slack message successfully sent!');
+            util.log('Slack message sent!');
           }
           else {
             console.log(response);
@@ -206,10 +203,9 @@ var isFinished = setInterval(function() {
           },
             function(err, responseData) {
               if (!err) {
-                  console.log('SMS Sent to: ' + responseData.to);
+                  util.log('SMS Sent! (' + responseData.to + ')');
               }
               else {
-                console.log('error sms');
                 console.log(err);
               }
           });
