@@ -46,7 +46,6 @@ var pages = [
   '/blog',
   '/notarealpage404',
   '/alsonotarealpage'
-
 ];
 
 

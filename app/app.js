@@ -15,7 +15,7 @@ var storage = require('node-persist');
 var moment = require('moment');
 
 // Require app.config.js
-var config = require('./app.config.js');
+var config = require('../app.config.js');
 
 // ----- Global Variables -----
 var errors = 0;
