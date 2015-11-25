@@ -4,7 +4,8 @@
   "description": "A simple bot that notifies you when specified webpages are down.",
   "main": "app/app.js",
   "scripts": {
-    "": ""
+    "jasper": "node app/app.js",
+    "doctor": "node doctor/doctor.js"
   },
   "author": "TJ Hillard",
   "license": "ISC",
