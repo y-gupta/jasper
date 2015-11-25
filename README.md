@@ -9,9 +9,11 @@
 1. Install all of the project dependencies via
 ```npm install```.
 
-2. Then, in ```config.app.js``` start configuring/customizing as much as you want to!
+2. Then, in ```config.app.js``` start configuring/customizing as much or as little as you would like!
 
-3. You can run script manually through CLI by running ```node app.js``` while in the directory or
+3. To run the app, type ```npm run jasper```. If you are experiencing issues, try ```npm run doctor```.
+
+4. You can run script manually through CLI by running ```node app.js``` while in the directory or
 you can put the script automatically on an interval via AWS [lambda](https://console.aws.amazon.com/lambda/). More information and a guide for this are in the works.
 
 ## Notification Options
