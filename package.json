@@ -2,7 +2,7 @@
   "name": "ora-status-tool",
   "version": "0.1.1",
   "description": "A simple bot that notifies you when specified webpages are down.",
-  "main": "app.js",
+  "main": "app/app.js",
   "scripts": {
     "": ""
   },
