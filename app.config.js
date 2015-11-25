@@ -1,5 +1,5 @@
 // Jasper
-// A simple bot that emails you when specified webpages are down
+// A simple bot that notifies you when specified webpages are down
 // Created by TJ Hillard - Nov 21 2015
 
 /*jslint node: true */
