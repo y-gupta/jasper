@@ -19,14 +19,7 @@ var CronJob = require('cron').CronJob;
 var config = require('../app.config.js');
 var notifications = require('./notifications.js');
 
-// suppress Notifications if User Sets it
-var suppressNotifications = {};
-
-if (!config.main.notifyEveryError) {
-  suppressNotifications.enabled = true;
-}
-
-var runJasper = function() {
+var runTests = function() {
 
   // ----- Global Variables -----
   var errors = 0;
@@ -106,50 +99,11 @@ var runJasper = function() {
         }
       );
 
-      // Were there any errors received?
-      if (errors === 0) {
-        delete suppressNotifications.firstFail;
-        delete suppressNotifications.lastFail;
-      }
-      else {
-        // module.exports = failedPages;
-        // Hold notifications if user just got one recently.
-        // Check if user has setting enabled
-        if (suppressNotifications.enabled) {
-          // They do
-          // Does the object have a first fail property saved?
-          if (!suppressNotifications.firstFail) {
-            // No first fail, this must be it
-            suppressNotifications.firstFail = new Date().getTime();
-          }
-          else {
-            suppressNotifications.lastFail = new Date().getTime();
-          }
-          // We now either have a first fail and/or last fail.
-          // If first fail is active but last fail isn't -> user needs to receive notifications.
-          if (suppressNotifications.firstFail && !suppressNotifications.lastFail) {
-            // send notifications
-            notifications.sendAllNotifications();
-          }
-          // If first fail and last fail are both truthy, then check time between the two
-          else if (suppressNotifications.firstFail && suppressNotifications.lastFail) {
-            let timeDiff = (suppressNotifications.lastFail - suppressNotifications.firstFail) / 1000;
-            let timeLeft = (config.main.frequency * 3600) - timeDiff;
-
-            if (timeDiff < (config.main.frequency * 3600)) {
-              console.log('Notifications suppressed for another ' + timeLeft + ' seconds.');
-            }
-            else {
-              suppressNotifications.firstFail = new Date().getTime();
-              notifications.sendAllNotifications();
-            }
-          }
-        }
-      }
-
-
       // All async methods complete
       clearInterval(isFinished);
+
+      // Notifications Logic
+      notifications.areNotificationsSuppressed();
 
     }
   }, 250);
@@ -159,6 +113,6 @@ var runJasper = function() {
 // var http = require('http');
 
 // Run Jasper Every 15 minutes on the hour
-new CronJob('00 00,15,30,45 * * * *', function(){
-  runJasper();
+new CronJob('00,15,30,45 * * * * *', function(){
+  runTests();
 }, null, true, "America/Chicago");
