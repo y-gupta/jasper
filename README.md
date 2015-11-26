@@ -13,8 +13,6 @@
 
 3. To run the app, type ```npm run jasper```. If you are experiencing issues, try ```npm run doctor```.
 
-**Bonus:** Check out [Lambda](https://console.aws.amazon.com/lambda/) on AWS to run Jasper automatically on a set interval.
-
 ## Notification Options
 * Email
 * HipChat
