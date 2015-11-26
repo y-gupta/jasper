@@ -74,7 +74,7 @@ var email = {
   },
 
   // Who will be receiving these email notifications?
-  recipients: ['recipient1@email.com', 'recipient2@email.com']
+  recipients: ['', '']
 
 };
 
