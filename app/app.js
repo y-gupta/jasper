@@ -5,10 +5,6 @@
 /*jslint node: true */
 'use strict';
 
-var notificationFrequency = {
-  enabled: true
-};
-
 // Dependencies - 'npm install'
 var util = require('util');
 var request = require('request');
@@ -19,8 +15,16 @@ var storage = require('node-persist');
 var moment = require('moment');
 var CronJob = require('cron').CronJob;
 
-// Require app.config.js
+// Require app.config.js and notifications.js
 var config = require('../app.config.js');
+var notifications = require('./notifications.js');
+
+// Supress Notifications if User Sets it
+var supressNotifications = {};
+
+if (!config.main.notifyEveryError) {
+  supressNotifications.enabled = true;
+}
 
 var runJasper = function() {
 
@@ -34,9 +38,11 @@ var runJasper = function() {
 
   // Empty array that holds failed config.pages
   var failedPages = [];
+  exports.failedPages = failedPages;
 
   // Get start time to track the time it took for each request
   const startTime = new Date().getTime();
+
 
   // ----- Run The Tests! -----
   util.log(colors.blue.bold(' --------- ' + emoji.get('rocket') + ' Running Tests ' + emoji.get('rocket') + ' ---------\n'));
@@ -76,6 +82,8 @@ var runJasper = function() {
   // Check if all async opertations are complete every quarter second
   var isFinished = setInterval(function() {
 
+    exports.errors = errors;
+
     if (counter === config.pages.length) {
       console.log(colors.underline('\nDone!' + '\n'));
 
@@ -100,162 +108,45 @@ var runJasper = function() {
 
       // Were there any errors received?
       if (errors === 0) {
-        // nope. do nothing... we guuci
+        delete supressNotifications.firstFail;
+        delete supressNotifications.lastFail;
       }
       else {
+        // module.exports = failedPages;
         // Hold notifications if user just got one recently.
         // Check if user has setting enabled
-        if (notificationFrequency.enabled) {
+        if (supressNotifications.enabled) {
           // They do
           // Does the object have a first fail property saved?
-          if (!notificationFrequency.firstFail) {
+          if (!supressNotifications.firstFail) {
             // No first fail, this must be it
-            notificationFrequency.firstFail = new Date().getTime();
+            supressNotifications.firstFail = new Date().getTime();
           }
           else {
-            notificationFrequency.lastFail = new Date().getTime();
+            supressNotifications.lastFail = new Date().getTime();
           }
-
           // We now either have a first fail and/or last fail.
           // If first fail is active but last fail isn't -> user needs to receive notifications.
-
+          if (supressNotifications.firstFail && !supressNotifications.lastFail) {
+            // send notifications
+            notifications.sendAllNotifications();
+          }
           // If first fail and last fail are both truthy, then check time between the two
-          // If the time is less than user set frequency, do nothing
+          else if (supressNotifications.firstFail && supressNotifications.lastFail) {
+            let timeDiff = (supressNotifications.lastFail - supressNotifications.firstFail) / 1000;
+            let timeLeft = (config.main.frequency * 3600) - timeDiff;
 
-          // If it isn't send out those notifications
-
-
-        }
-      }
-
-
-      // ---------- Notifications ----------
-      // ----- Email ------
-      var sendEmail = function() {
-
-        if (config.main.emailNotifications) {
-          var nodemailer = require('nodemailer');
-
-          var transporter = nodemailer.createTransport({
-              service: 'Gmail',
-              auth: {
-                  user: config.email.auth.emailAddress,
-                  pass: config.email.auth.password
-              }
-          });
-
-          var mailOptions = {
-              from: config.bot.name + ' ' + emoji.get(config.bot.emoji),
-              to: config.email.recipients, // List of email recipients
-              subject: errors + ' issue(s) detected with ' + config.main.baseUrl , // Subject line
-              html:
-                emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + errors + ' issue(s) with ' +
-                '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
-              'The following pages are showing errors.</span><br><br>' + failedPages// HTML body
-          };
-
-          if (errors > 0) {
-            transporter.sendMail(mailOptions, function(error, info){
-              if (error) {
-                return console.log(error);
-              }
-            });
+            if (timeDiff < (config.main.frequency * 3600)) {
+              console.log('Notifications supressed by user for another ' + timeLeft + ' seconds.');
+            }
+            else {
+              supressNotifications.firstFail = new Date().getTime();
+              notifications.sendAllNotifications();
+            }
           }
         }
-      };
-
-
-
-
-
-      // ----- HipChat ------
-      if (config.main.hipchatNotifications) {
-        var HipChatClient = require('hipchat-client');
-        var hipchat = new HipChatClient(config.hipchat.token);
-
-        if (errors > 0) {
-          hipchat.api.rooms.message({
-            room_id: config.hipchat.room,
-            from: config.bot.name,
-            message:
-              emoji.get(config.bot.emoji) + config.bot.name +
-              '<span> has detected ' + errors + ' issue(s) with ' +
-              '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
-              'The following pages are showing errors.</span><br><br>' + failedPages
-          },
-            // Callback
-            function (err, res) {
-            if (err) {
-              console.log(err);
-            }
-            else if (res.status === 'sent') {
-              util.log('HipChat Message Sent!');
-            }
-            else {
-              console.log('There was a problem sending the HipChat message.');
-            }
-          });
-        }
       }
 
-
-      // ----- Slack -----
-      if (config.main.slackNotifications) {
-        var Slack = require('slack-node');
-
-        if (errors > 0) {
-          var slack = new Slack();
-          slack.setWebhook(config.slack.webhookUri);
-
-          slack.webhook({
-            channel: config.slack.channel,
-            username: config.bot.name,
-            icon_emoji: ":" + config.bot.emoji + ":",
-            text:
-              config.bot.name + ' has detected ' + errors + ' issue(s) with ' + config.main.baseUrl + '.\n' +
-              'The following pages are showing errors.\n' + failedPages
-          }, function(err, response) {
-            if (err) {
-              console.log(err);
-            }
-            else if (response.status == 'ok') {
-              util.log('Slack message sent!');
-            }
-            else {
-              console.log(response);
-            }
-          });
-        }
-      }
-
-
-      // ----- SMS (Twilio) -----
-      if (config.main.smsNotifications) {
-        var client = require('twilio')(config.sms.accountSid, config.sms.authToken);
-
-        if (errors > 0) {
-          var recipients = config.sms.to;
-          recipients.forEach(function(recipient) {
-
-            client.sendMessage({
-                to: recipient,
-                from: config.sms.twilioPhoneNumber,
-                body:
-                  config.bot.name + ' has detected ' + errors + ' issue(s) with ' + config.main.baseUrl + '.\n' +
-                  'The following pages are showing errors.\n' + failedPages
-
-            },
-              function(err, responseData) {
-                if (!err) {
-                    util.log('SMS Sent! (' + responseData.to + ')');
-                }
-                else {
-                  console.log(err);
-                }
-            });
-          });
-        }
-      }
 
       // All async methods complete
       clearInterval(isFinished);
@@ -264,10 +155,11 @@ var runJasper = function() {
   }, 250);
 };
 
-var http = require('http');
+// Server???
+// var http = require('http');
 
 // Run Jasper Every 15 minutes on the hour
-new CronJob('15,30,45 * * * * *', function(){
+new CronJob('0,15,30,45 * * * * *', function(){
   runJasper();
-  console.log(notificationFrequency);
+  console.log(supressNotifications);
 }, null, true, "America/Chicago");

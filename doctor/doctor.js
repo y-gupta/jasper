@@ -77,6 +77,11 @@ var doctorTests = (function() {
       console.log(colors.red(JSON.stringify(config) + ' must be a string!'));
     }
   });
+  // Is the Frequency value a number?
+  if (typeof config.main.frequency !== 'number') {
+    issues++;
+    console.log(colors.red('config.frequency must be a number!'));
+  }
   // Are all activation booleans booleans?
   let shouldBeBoolean = [
     config.main.emailNotifications,

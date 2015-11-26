@@ -30,9 +30,11 @@ var main = {
   smsNotifications: false,
 
   // Do you want to receieve notifications every time there is an error?
-  // notificationFrequency enabled boolean
-  // If enabled, choose hours between repeat/followup notifications
-  frequency: 1 // in hours
+  // Yes -> true      No -> false
+  notifyEveryError: false,
+
+    // If you chose false, set the hours between repeat/followup notifications
+    frequency: 2 // in hours
 
 };
 
@@ -79,7 +81,8 @@ var email = {
   },
 
   // Who will be receiving these email notifications?
-  recipients: ['', '']
+  // Note: Must be array
+  recipients: ['']
 
 };
 
