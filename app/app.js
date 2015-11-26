@@ -19,11 +19,11 @@ var CronJob = require('cron').CronJob;
 var config = require('../app.config.js');
 var notifications = require('./notifications.js');
 
-// Supress Notifications if User Sets it
-var supressNotifications = {};
+// suppress Notifications if User Sets it
+var suppressNotifications = {};
 
 if (!config.main.notifyEveryError) {
-  supressNotifications.enabled = true;
+  suppressNotifications.enabled = true;
 }
 
 var runJasper = function() {
@@ -108,39 +108,39 @@ var runJasper = function() {
 
       // Were there any errors received?
       if (errors === 0) {
-        delete supressNotifications.firstFail;
-        delete supressNotifications.lastFail;
+        delete suppressNotifications.firstFail;
+        delete suppressNotifications.lastFail;
       }
       else {
         // module.exports = failedPages;
         // Hold notifications if user just got one recently.
         // Check if user has setting enabled
-        if (supressNotifications.enabled) {
+        if (suppressNotifications.enabled) {
           // They do
           // Does the object have a first fail property saved?
-          if (!supressNotifications.firstFail) {
+          if (!suppressNotifications.firstFail) {
             // No first fail, this must be it
-            supressNotifications.firstFail = new Date().getTime();
+            suppressNotifications.firstFail = new Date().getTime();
           }
           else {
-            supressNotifications.lastFail = new Date().getTime();
+            suppressNotifications.lastFail = new Date().getTime();
           }
           // We now either have a first fail and/or last fail.
           // If first fail is active but last fail isn't -> user needs to receive notifications.
-          if (supressNotifications.firstFail && !supressNotifications.lastFail) {
+          if (suppressNotifications.firstFail && !suppressNotifications.lastFail) {
             // send notifications
             notifications.sendAllNotifications();
           }
           // If first fail and last fail are both truthy, then check time between the two
-          else if (supressNotifications.firstFail && supressNotifications.lastFail) {
-            let timeDiff = (supressNotifications.lastFail - supressNotifications.firstFail) / 1000;
+          else if (suppressNotifications.firstFail && suppressNotifications.lastFail) {
+            let timeDiff = (suppressNotifications.lastFail - suppressNotifications.firstFail) / 1000;
             let timeLeft = (config.main.frequency * 3600) - timeDiff;
 
             if (timeDiff < (config.main.frequency * 3600)) {
-              console.log('Notifications supressed by user for another ' + timeLeft + ' seconds.');
+              console.log('Notifications suppressed for another ' + timeLeft + ' seconds.');
             }
             else {
-              supressNotifications.firstFail = new Date().getTime();
+              suppressNotifications.firstFail = new Date().getTime();
               notifications.sendAllNotifications();
             }
           }
@@ -161,5 +161,4 @@ var runJasper = function() {
 // Run Jasper Every 15 minutes on the hour
 new CronJob('0,15,30,45 * * * * *', function(){
   runJasper();
-  console.log(supressNotifications);
 }, null, true, "America/Chicago");
