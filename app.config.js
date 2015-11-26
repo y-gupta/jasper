@@ -27,7 +27,12 @@ var main = {
 
   // Do you want to activate SMS notifications?
   // Yes -> true      No -> false
-  smsNotifications: false
+  smsNotifications: false,
+
+  // Do you want to receieve notifications every time there is an error?
+  // notificationFrequency enabled boolean
+  // If enabled, choose hours between repeat/followup notifications
+  frequency: 1 // in hours
 
 };
 
