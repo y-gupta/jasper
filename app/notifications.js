@@ -9,7 +9,6 @@ var util = require('util');
 var emoji = require('node-emoji');
 
 var app = require('./app.js');
-var tests = require('./tests.js');
 var config = require('../app.config.js');
 
 // ----- Email ------
