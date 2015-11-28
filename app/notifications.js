@@ -9,6 +9,7 @@ var util = require('util');
 var emoji = require('node-emoji');
 
 var app = require('./app.js');
+var tests = require('./tests.js');
 var config = require('../app.config.js');
 
 // ----- Email ------
@@ -158,14 +159,14 @@ if (!config.main.notifyEveryError) {
 // The logic for sending notifications when user has notification frequency set
 var areNotificationsSuppressed = function() {
   // Were there any errors received?
-  if (app.errors === 0) {
+  if (tests.errors <= 0) {
     delete suppressNotifications.firstFail;
     delete suppressNotifications.lastFail;
   }
   else {
     // Hold notifications if user just got one recently.
     // Check if user has setting enabled
-    if (suppressNotifications.enabled) {
+    if (suppressNotifications.enabled && tests.errors > 0) {
       // They do
       // Does the object have a first fail property saved?
       if (!suppressNotifications.firstFail) {

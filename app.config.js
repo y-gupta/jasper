@@ -15,7 +15,7 @@ var main = {
 
   // Do you want to send email notifications?
   // Yes -> true      No -> false
-  emailNotifications: false,
+  emailNotifications: true,
 
   // Do you want to activate HipChat notifications?
   // Yes -> true      No -> false
@@ -34,7 +34,7 @@ var main = {
   notifyEveryError: false,
 
     // If you chose false, set the hours between repeat/followup notifications
-    frequency: 2 // in hours
+    frequency: 1 // in hours
 
 };
 
@@ -50,7 +50,8 @@ var pages = [
   '/process',
   '/portfolio',
   '/careers',
-  '/blog'
+  '/blog',
+  '/notarealpage'
 ];
 
 
@@ -73,14 +74,14 @@ var email = {
 
     // Gmail needs an account to authorize the messages being sent
     // Note: This will also be the return address for the automated emails
-    emailAddress: '',
-    password: ''
+    emailAddress: 'tj@orainteractive.com',
+    password: 'Cookie11'
 
   },
 
   // Who will be receiving these email notifications?
   // Note: Must be array
-  recipients: ['']
+  recipients: ['tjhillard@gmail.com']
 
 };
 

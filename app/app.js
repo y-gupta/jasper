@@ -8,9 +8,10 @@
 var CronJob = require('cron').CronJob;
 
 var config = require('../app.config.js');
-var notifications = require('./notifications.js');
 var tests = require('./tests.js');
+var notifications = require('./notifications.js');
 
-new CronJob('00 00,15,30,45 * * * *', function(){
+new CronJob('00,15,30,45 * * * * *', function(){
   tests.runTests();
+  console.log(tests.errors);
 }, null, true, "America/Chicago");
