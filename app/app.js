@@ -109,10 +109,7 @@ var runTests = function() {
   }, 250);
 };
 
-// Server???
-// var http = require('http');
-
-// Run Jasper Every 15 minutes on the hour
+// Run Tests Every 15 minutes on the hour
 new CronJob('00 00,15,30,45 * * * *', function(){
   runTests();
 }, null, true, "America/Chicago");
