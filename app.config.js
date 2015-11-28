@@ -50,7 +50,8 @@ var pages = [
   '/process',
   '/portfolio',
   '/careers',
-  '/blog'
+  '/blog',
+  '/notarealpage'
 ];
 
 
