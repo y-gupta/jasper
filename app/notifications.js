@@ -163,25 +163,16 @@ var areNotificationsSuppressed = function() {
     delete suppressNotifications.lastFail;
   }
   else {
-    // Hold notifications if user just got one recently.
-    // Check if user has setting enabled
     if (suppressNotifications.enabled && app.errors > 0) {
-      // They do
-      // Does the object have a first fail property saved?
       if (!suppressNotifications.firstFail) {
-        // No first fail, this must be it
         suppressNotifications.firstFail = new Date().getTime();
       }
       else {
         suppressNotifications.lastFail = new Date().getTime();
       }
-      // We now either have a first fail and/or last fail.
-      // If first fail is active but last fail isn't -> user needs to receive notifications.
       if (suppressNotifications.firstFail && !suppressNotifications.lastFail) {
-        // send notifications
         sendAllNotifications();
       }
-      // If first fail and last fail are both truthy, then check time between the two
       else if (suppressNotifications.firstFail && suppressNotifications.lastFail) {
         let timeDiff = (suppressNotifications.lastFail - suppressNotifications.firstFail) / 1000;
         let timeLeft = (config.main.frequency * 3600) - timeDiff;
