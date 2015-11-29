@@ -33,7 +33,6 @@ var runTests = function() {
 
   // Empty array that holds failed config.pages
   var failedPages = [];
-  // exports.failedPages = failedPages;
 
   // Get start time to track the time it took for each request
   const startTime = new Date().getTime();
@@ -76,8 +75,6 @@ var runTests = function() {
 
   // Check if all async opertations are complete every quarter second
   var isFinished = setInterval(function() {
-
-    // exports.errors = errors;
 
     if (counter === config.pages.length) {
       console.log(colors.underline('\nDone!' + '\n'));
