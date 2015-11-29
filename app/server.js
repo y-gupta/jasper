@@ -7,19 +7,18 @@
 
 var express = require('express');
 var app = express();
-
-var mainModule = require('./app.js');
-
 var storage = require('node-persist');
   storage.initSync();
 
+var mainModule = require('./app.js');
+
+// GET /api/logs/
 app.get('/api/logs', function (req, res) {
   res.send(mainModule.logs);
 });
 
+// Launch Server
 var server = app.listen(3000, function () {
   var host = server.address().address;
   var port = server.address().port;
-
-  console.log('Server and API are now online!');
 });

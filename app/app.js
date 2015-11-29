@@ -83,6 +83,7 @@ var runTests = function() {
       console.log(colors.yellow('Warnings: ' + warnings));
       console.log(colors.green.underline('Success: ' + successes + '\n'));
 
+      // Store Status Object to be used in Persisted Storage/API
       status = {
         time: moment(startTime).format('x'),
         summary: {
@@ -97,7 +98,7 @@ var runTests = function() {
 
       // Save data from this run to server localStorage
       // Located in 'Persist' folder, only visible after frist completed run
-      storage.setItem((moment(startTime).format('x').toString()) + '.json', status);
+      storage.setItem((moment(startTime).format('MMMM Do YYYY, h:mm:ss a').toString()) + '.json', status);
 
       var logs = storage.values();
 
@@ -106,7 +107,7 @@ var runTests = function() {
       // All async methods complete
       clearInterval(isFinished);
 
-      // Notifications Logic
+      // Notifications
       notifications.areNotificationsSuppressed();
 
     }
