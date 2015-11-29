@@ -13,8 +13,13 @@ var storage = require('node-persist');
 var mainModule = require('./app.js');
 
 // GET /api/logs/
-app.get('/api/logs', function (req, res) {
-  res.send(mainModule.logs);
+app.get('/api/logs', function (request, response) {
+  if (request.query.reverse === 'true') {
+    response.send((mainModule.logs).reverse());
+  }
+  else {
+    response.send(mainModule.logs);
+  }
 });
 
 // Launch Server

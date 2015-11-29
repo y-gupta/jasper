@@ -97,7 +97,6 @@ var runTests = function() {
       exports.status = status;
 
       // Save data from this run to server localStorage
-      // Located in 'Persist' folder, only visible after frist completed run
       storage.setItem((moment(startTime).format('MMMM Do YYYY, h:mm:ss a').toString()) + '.json', status);
 
       var logs = storage.values();
@@ -114,7 +113,7 @@ var runTests = function() {
   }, 250);
 };
 
-// Initializes Data, Run Preliminary Tests
+// Initializes Data, Runs Preliminary Tests
 runTests();
 
 // Run Tests Every 15 minutes on the hour
