@@ -19,11 +19,10 @@ var CronJob = require('cron').CronJob;
 var config = require('../app.config.js');
 var notifications = require('./notifications.js');
 
-var status;
-
 var runTests = function() {
 
   // ----- Global Variables -----
+  var status;
   var errors = 0;
   var warnings = 0;
   var successes = 0;
@@ -33,7 +32,6 @@ var runTests = function() {
 
   // Empty array that holds failed config.pages
   var failedPages = [];
-  // exports.failedPages = failedPages;
 
   // Get start time to track the time it took for each request
   const startTime = new Date().getTime();
@@ -77,8 +75,6 @@ var runTests = function() {
   // Check if all async opertations are complete every quarter second
   var isFinished = setInterval(function() {
 
-    // exports.errors = errors;
-
     if (counter === config.pages.length) {
       console.log(colors.underline('\nDone!' + '\n'));
 
@@ -87,8 +83,9 @@ var runTests = function() {
       console.log(colors.yellow('Warnings: ' + warnings));
       console.log(colors.green.underline('Success: ' + successes + '\n'));
 
+      // Store Status Object to be used in Persisted Storage/API
       status = {
-        time: startTime,
+        time: moment(startTime).format('x'),
         summary: {
           errors: errors,
           warnings: warnings,
@@ -101,19 +98,26 @@ var runTests = function() {
 
       // Save data from this run to server localStorage
       // Located in 'Persist' folder, only visible after frist completed run
-      storage.setItem(moment(startTime).format('x').toString(), status);
+      storage.setItem((moment(startTime).format('MMMM Do YYYY, h:mm:ss a').toString()) + '.json', status);
+
+      var logs = storage.values();
+
+      exports.logs = logs;
 
       // All async methods complete
       clearInterval(isFinished);
 
-      // Notifications Logic
+      // Notifications
       notifications.areNotificationsSuppressed();
 
     }
   }, 250);
 };
 
+// Initializes Data, Run Preliminary Tests
+runTests();
+
 // Run Tests Every 15 minutes on the hour
-new CronJob('00,15,30,45 * * * * *', function(){
+new CronJob('00 00,15,30,45 * * * *', function(){
   runTests();
 }, null, true, "America/Chicago");

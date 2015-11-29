@@ -1,6 +1,6 @@
 {
   "name": "Jasper",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A simple bot that notifies you when specified webpages are down.",
   "main": "app/app.js",
   "repository":
@@ -8,7 +8,7 @@
     , "url" : "https://github.com/tjhillard/jasper"
     },
   "scripts": {
-    "jasper": "node app/app.js",
+    "jasper": "node app/server.js",
     "doctor": "node doctor/doctor.js"
   },
   "author": "TJ Hillard",
