@@ -20,9 +20,8 @@
 * SMS (via Twilio)
 
 ## API
-Jasper has a build in API for you to use as well. Right now there is only one endpoint that returns an array of all saved test logs.
+Jasper has a built in API for you to use as well. Right now there is only one endpoint that returns an array of all saved test logs.
 
 #### GET /api/logs
-
 Array returns logs in order of oldest to newest. Request has no params at the moment.
 
