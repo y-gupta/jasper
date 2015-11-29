@@ -114,7 +114,7 @@ var runTests = function() {
   }, 250);
 };
 
-// Initializes Data, Runs Preliminary Tests
+// Initializes Data, Run Preliminary Tests
 runTests();
 
 // Run Tests Every 15 minutes on the hour
