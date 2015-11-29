@@ -19,11 +19,10 @@ var CronJob = require('cron').CronJob;
 var config = require('../app.config.js');
 var notifications = require('./notifications.js');
 
-var status;
-
 var runTests = function() {
 
   // ----- Global Variables -----
+  var status;
   var errors = 0;
   var warnings = 0;
   var successes = 0;
@@ -98,7 +97,7 @@ var runTests = function() {
 
       // Save data from this run to server localStorage
       // Located in 'Persist' folder, only visible after frist completed run
-      storage.setItem(moment(startTime).format('x').toString(), status);
+      storage.setItem((moment(startTime).format('x').toString()) + '.json', status);
 
       // All async methods complete
       clearInterval(isFinished);
