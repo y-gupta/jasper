@@ -21,11 +21,12 @@
 
 ## API
 
-#### GET /api/logs
+### GET /api/logs
 Array returns array of objects containing all test logs saved in persist folder.
 
-**Params**
-reverse (default: false) | Set to true to reverse array and show results in order from newest to oldest.
+#### Params
+**reverse:**
+(default: false) | Set to true to reverse array and show results in order from newest to oldest.
 localhost:3000/api/logs?reverse=true
 
 
