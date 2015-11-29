@@ -11,6 +11,11 @@ var emoji = require('node-emoji');
 var app = require('./app.js');
 var config = require('../app.config.js');
 
+// ----- Notifications Function Tree -----
+// 1. areNotificationsSuppressed() Always Runs
+// 2. sendAllNotifications() if errors and config settings enabled
+// 3. sendAllNotifications will send the inidivual notifications as applies
+
 // ----- Email ------
 var sendEmail = function() {
 

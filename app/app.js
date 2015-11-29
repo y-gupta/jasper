@@ -84,7 +84,7 @@ var runTests = function() {
       console.log(colors.green.underline('Success: ' + successes + '\n'));
 
       status = {
-        time: startTime,
+        time: moment(startTime).format('x'),
         summary: {
           errors: errors,
           warnings: warnings,
@@ -99,6 +99,10 @@ var runTests = function() {
       // Located in 'Persist' folder, only visible after frist completed run
       storage.setItem((moment(startTime).format('x').toString()) + '.json', status);
 
+      var logs = storage.values();
+
+      exports.logs = logs;
+
       // All async methods complete
       clearInterval(isFinished);
 
@@ -109,7 +113,10 @@ var runTests = function() {
   }, 250);
 };
 
+// Initializes Data, Runs Preliminary Tests
+runTests();
+
 // Run Tests Every 15 minutes on the hour
-new CronJob('00,15,30,45 * * * * *', function(){
+new CronJob('00 00,15,30,45 * * * *', function(){
   runTests();
 }, null, true, "America/Chicago");
