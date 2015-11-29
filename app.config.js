@@ -15,7 +15,7 @@ var main = {
 
   // Do you want to send email notifications?
   // Yes -> true      No -> false
-  emailNotifications: false,
+  emailNotifications: true,
 
   // Do you want to activate HipChat notifications?
   // Yes -> true      No -> false

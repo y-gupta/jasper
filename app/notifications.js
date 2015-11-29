@@ -25,11 +25,11 @@ var sendEmail = function() {
   var mailOptions = {
       from: config.bot.name + ' ' + emoji.get(config.bot.emoji),
       to: config.email.recipients, // List of email recipients
-      subject: app.errors + ' issue(s) detected with ' + config.main.baseUrl , // Subject line
+      subject: app.status.summary.errors + ' issue(s) detected with ' + config.main.baseUrl , // Subject line
       html:
-        emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + app.errors + ' issue(s) with ' +
+        emoji.get(config.bot.emoji) + config.bot.name + '<span> has detected ' + app.status.summary.errors + ' issue(s) with ' +
         '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
-        'The following pages are showing errors.</span><br><br>' + app.failedPages // HTML body
+        'The following pages are showing errors.</span><br><br>' + app.status.failedPages // HTML body
   };
 
   transporter.sendMail(mailOptions, function(error, info){
@@ -55,9 +55,9 @@ var sendHipChat = function() {
     from: config.bot.name,
     message:
       emoji.get(config.bot.emoji) + config.bot.name +
-      '<span> has detected ' + app.errors + ' issue(s) with ' +
+      '<span> has detected ' + app.status.summary.errors + ' issue(s) with ' +
       '<a href="' + config.main.baseUrl +  '">' + config.main.baseUrl + '</a>.' +
-      'The following pages are showing errors.</span><br><br>' + app.failedPages
+      'The following pages are showing errors.</span><br><br>' + app.status.failedPages
   },
     // Callback
     function (err, res) {
@@ -87,8 +87,8 @@ var sendSlack = function() {
       username: config.bot.name,
       icon_emoji: ":" + config.bot.emoji + ":",
       text:
-        config.bot.name + ' has detected ' + app.errors + ' issue(s) with ' + config.main.baseUrl + '.\n' +
-        'The following pages are showing errors.\n' + app.failedPages
+        config.bot.name + ' has detected ' + app.status.summary.errors + ' issue(s) with ' + config.main.baseUrl + '.\n' +
+        'The following pages are showing errors.\n' + app.status.failedPages
     }, function(err, response) {
       if (err) {
         console.log(err);
@@ -116,8 +116,8 @@ var sendSMS = function() {
           to: recipient,
           from: config.sms.twilioPhoneNumber,
           body:
-            config.bot.name + ' has detected ' + app.errors + ' issue(s) with ' + config.main.baseUrl + '.\n' +
-            'The following pages are showing errors.\n' + app.failedPages
+            config.bot.name + ' has detected ' + app.status.summary.errors + ' issue(s) with ' + config.main.baseUrl + '.\n' +
+            'The following pages are showing errors.\n' + app.status.failedPages
 
       },
         function(err, responseData) {
@@ -158,12 +158,12 @@ if (!config.main.notifyEveryError) {
 // The logic for sending notifications when user has notification frequency set
 var areNotificationsSuppressed = function() {
   // Were there any errors received?
-  if (app.errors <= 0) {
+  if (app.status.summary.errors <= 0) {
     delete suppressNotifications.firstFail;
     delete suppressNotifications.lastFail;
   }
   else {
-    if (suppressNotifications.enabled && app.errors > 0) {
+    if (suppressNotifications.enabled && app.status.summary.errors > 0) {
       if (!suppressNotifications.firstFail) {
         suppressNotifications.firstFail = new Date().getTime();
       }
