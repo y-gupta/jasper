@@ -20,8 +20,16 @@
 * SMS (via Twilio)
 
 ## API
-Jasper has a built in API for you to use as well. Right now there is only one endpoint that returns an array of all saved test logs.
 
-#### GET /api/logs
-Array returns logs in order of oldest to newest. Request has no params at the moment.
+### GET /api/logs
+Returns array of objects containing all test logs saved in persist folder. (JSON)
+
+#### Params
+**reverse:**
+(default: false) | (Optional) | Set to true to reverse array and show results in order from newest to oldest.
+
+```
+localhost:3000/api/logs?reverse=true
+```
+
 
