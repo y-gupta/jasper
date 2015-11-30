@@ -160,15 +160,18 @@ if (!config.main.notifyEveryError) {
   suppressNotifications.enabled = true;
 }
 
-// The logic for sending notifications when user has notification frequency set
 var areNotificationsSuppressed = function() {
-  // Were there any errors received?
-  if (app.status.summary.errors <= 0) {
+  // There were no errors
+  if (app.status.summary.errors === 0) {
     delete suppressNotifications.firstFail;
     delete suppressNotifications.lastFail;
+    return;
   }
   else {
-    if (suppressNotifications.enabled && app.status.summary.errors > 0) {
+    if (!suppressNotifications.enabled) {
+      sendAllNotifications();
+    }
+    else {
       if (!suppressNotifications.firstFail) {
         suppressNotifications.firstFail = new Date().getTime();
       }
@@ -190,10 +193,6 @@ var areNotificationsSuppressed = function() {
           sendAllNotifications();
         }
       }
-    }
-    else {
-      // supress notifications is disabled
-      sendAllNotifications();
     }
   }
 };
