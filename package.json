@@ -9,6 +9,7 @@
   },
   "scripts": {
     "jasper": "node app/server.js",
+    "start": "node app/server.js",
     "doctor": "node doctor/doctor.js"
   },
   "author": "TJ Hillard",
