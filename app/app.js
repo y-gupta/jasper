@@ -37,7 +37,7 @@ var runTests = function() {
   const startTime = new Date().getTime();
 
 
-  // ----- Run The Tests! -----
+  // ---------- Run The Tests! ----------
   util.log(colors.blue.bold(' --------- ' + emoji.get('rocket') + ' Running Tests ' + emoji.get('rocket') + ' ---------\n'));
 
   console.log(colors.underline('Page, StatusCode, Speed(ms)'));
@@ -100,7 +100,6 @@ var runTests = function() {
       storage.setItem((moment(startTime).format('MMMM Do YYYY, h:mm:ss a').toString()) + '.json', status);
 
       var logs = storage.values();
-
       exports.logs = logs;
 
       // All async methods complete
@@ -117,6 +116,6 @@ var runTests = function() {
 runTests();
 
 // Run Tests Every 15 minutes on the hour
-new CronJob('00 00,15,30,45 * * * *', function(){
+new CronJob(config.main.testFrequency, function(){
   runTests();
 }, null, true, "America/Chicago");

@@ -10,20 +10,17 @@ var app = express();
 var storage = require('node-persist');
   storage.initSync();
 
-var mainModule = require('./app.js');
+var tests = require('./app.js');
 
 // GET /api/logs/
 app.get('/api/logs', function (request, response) {
   if (request.query.reverse === 'true') {
-    response.send((mainModule.logs).reverse());
+    response.send((tests.logs).reverse());
   }
   else {
-    response.send(mainModule.logs);
+    response.send(tests.logs);
   }
 });
 
 // Launch Server
-var server = app.listen(3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
-});
+app.listen(8888);

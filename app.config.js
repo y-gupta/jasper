@@ -13,6 +13,11 @@ var main = {
   // What is the base url you want to target?
   baseUrl: 'http://orainteractive.com',
 
+  // Run Tests Every So Often
+  // Default: Every 15 Minutes
+  // Read up about Cron Syntax Here --> http://crontab.org/
+  testFrequency: '00 00,15,30,45 * * * *',
+
   // Do you want to send email notifications?
   // Yes -> true      No -> false
   emailNotifications: false,
@@ -33,8 +38,8 @@ var main = {
   // Yes -> true      No -> false
   notifyEveryError: false,
 
-    // If you chose false, set the hours between repeat/followup notifications
-    frequency: 2 // in hours
+  // If you chose false, set the hours between repeat/followup notifications
+  frequency: 2 // in hours
 
 };
 
