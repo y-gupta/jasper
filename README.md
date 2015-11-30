@@ -26,7 +26,7 @@ Returns array of objects containing all test logs saved in persist folder. (JSON
 
 #### Params
 **reverse:**
-(default: false) | (Optional) | Set to true to reverse array and show results in order from newest to oldest.
+(default: false) | (Optional) | Truthy value returns array with newest values on bottom, oldest first.
 
 ```
 localhost:8888/api/logs?reverse=true
