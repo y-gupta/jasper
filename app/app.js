@@ -11,9 +11,11 @@ var request = require('request');
 var colors = require('colors');
 var emoji = require('node-emoji');
 var storage = require('node-persist');
-  storage.initSync();
 var moment = require('moment');
 var CronJob = require('cron').CronJob;
+
+// Init Local Storage
+storage.initSync();
 
 // Require app.config.js and notifications.js
 var config = require('../app.config.js');

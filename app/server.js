@@ -23,4 +23,4 @@ app.get('/api/logs', function (request, response) {
 });
 
 // Launch Server
-app.listen(8888);
+app.listen(process.env.PORT || 8888);
