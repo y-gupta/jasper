@@ -101,8 +101,10 @@ var runTests = function(callback) {
       // Save data from this run to server localStorage
       storage.setItem((moment(startTime).format('MMMM Do YYYY, h:mm:ss a').toString()) + '.json', status);
 
-      var logs = storage.values();
-      exports.logs = logs;
+      const LOGS = storage.values();
+      const LOGS_REVERSE = storage.values().reverse();
+      exports.LOGS = LOGS;
+      exports.LOGS_REVERSE = LOGS_REVERSE;
 
       // All async methods complete
       clearInterval(isFinished);
@@ -111,8 +113,9 @@ var runTests = function(callback) {
       notifications.areNotificationsSuppressed();
 
       // Runs Callback Function
-      callback();
-
+      if (callback) {
+        callback();
+      }
     }
   }, 250);
 };

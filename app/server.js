@@ -12,11 +12,11 @@ var storage = require('node-persist');
 
 var tests = require('./app.js');
 
+// Launch Server
 var runServer = function() {
-  // Launch Server
   const PORT = process.env.PORT || 8888;
   app.listen(PORT, function() {
-    console.log('Data initialized and Express Server sucessfully running on port 8888!');
+    console.log('Data initialized and Express Server sucessfully running on port ' + PORT + '!');
   });
 };
 
@@ -30,12 +30,10 @@ app.get('/', function(req, res) {
 
 app.get('/api/logs', function(req, res) {
   // GET /api/logs/
-  const logs = tests.logs;
-  
   if (req.query.reverse === 'true') {
-    res.send(logs.reverse());
+    res.send(tests.LOGS);
   }
   else {
-    res.send(logs);
+    res.send(tests.LOGS_REVERSE);
   }
 });
