@@ -5,6 +5,7 @@
 /*jslint node: true */
 'use strict';
 
+var request = require('request');
 var express = require('express');
 var app = express();
 var storage = require('node-persist');
@@ -21,6 +22,15 @@ var runServer = function() {
 };
 
 exports.runServer = runServer;
+
+// Workaround to Keep Heroku App From Falling Asleep
+setInterval(function() {
+    request({
+      urL: 'http://node-jasper.herokuapp.com'
+    }, function() {
+      console.log('Pinging server to keep it awake.');
+    });
+}, 300000);
 
 // API Root Splash View
 app.get('/', function(req, res) {
