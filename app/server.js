@@ -17,16 +17,16 @@ app.listen(process.env.PORT || 8888, function() {
   console.log('Express Server listening on port 8888!');
 });
 
-app.get('/', function(request, response) {
-  response.send('Hello! Welcome to Jasper!');
+app.get('/', function(req, res) {
+  res.send('Hello! Welcome to Jasper!');
 });
 
 // GET /api/logs/
-app.get('/api/logs', function(request, response) {
-  if (request.query.reverse === 'true') {
-    response.send((tests.logs).reverse());
+app.get('/api/logs', function(req, res) {
+  if (req.query.reverse === 'true') {
+    res.send((tests.logs).reverse());
   }
   else {
-    response.send(tests.logs);
+    res.send(tests.logs);
   }
 });
