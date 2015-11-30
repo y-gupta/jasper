@@ -17,6 +17,7 @@
   "dependencies": {
     "colors": "^1.1.2",
     "cron": "^1.0.9",
+    "express": "^4.13.3",
     "hipchat-client": "^1.0.4",
     "moment": "^2.10.6",
     "node-emoji": "^1.0.4",
