@@ -13,7 +13,8 @@ var storage = require('node-persist');
 var tests = require('./app.js');
 
 // Launch Server
-app.listen(process.env.PORT || 8888, function() {
+var PORT = process.env.PORT || 8888;
+app.listen(PORT, function() {
   console.log('Express Server listening on port 8888!');
 });
 
