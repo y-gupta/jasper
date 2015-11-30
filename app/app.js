@@ -21,7 +21,7 @@ storage.initSync();
 var config = require('../app.config.js');
 var notifications = require('./notifications.js');
 
-var runTests = function() {
+var runTests = function(callback) {
 
   // ----- Global Variables -----
   var status;
@@ -110,12 +110,18 @@ var runTests = function() {
       // Notifications
       notifications.areNotificationsSuppressed();
 
+      // Runs Callback Function
+      callback();
+
     }
   }, 250);
 };
 
 // Initializes Data, Runs Preliminary Tests
-runTests();
+// Callback function that launches express server and API
+runTests(function() {
+  var server = require('./server.js').runServer();
+});
 
 // Run Tests Every 15 minutes on the hour
 new CronJob(config.main.testFrequency, function(){

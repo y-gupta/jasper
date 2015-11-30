@@ -8,26 +8,34 @@
 var express = require('express');
 var app = express();
 var storage = require('node-persist');
-  storage.initSync();
+    storage.initSync();
 
 var tests = require('./app.js');
 
-// Launch Server
-var PORT = process.env.PORT || 8888;
-app.listen(PORT, function() {
-  console.log('Express Server listening on port 8888!');
-});
+var runServer = function() {
+  // Launch Server
+  const PORT = process.env.PORT || 8888;
+  app.listen(PORT, function() {
+    console.log('Data initialized and Express Server sucessfully running on port 8888!');
+  });
+};
 
+exports.runServer = runServer;
+
+// API Root Splash View
 app.get('/', function(req, res) {
   res.send('Hello! Welcome to Jasper!');
 });
 
-// GET /api/logs/
+
 app.get('/api/logs', function(req, res) {
+  // GET /api/logs/
+  const logs = tests.logs;
+  
   if (req.query.reverse === 'true') {
-    res.send((tests.logs).reverse());
+    res.send(logs.reverse());
   }
   else {
-    res.send(tests.logs);
+    res.send(logs);
   }
 });
