@@ -12,8 +12,17 @@ var storage = require('node-persist');
 
 var tests = require('./app.js');
 
+// Launch Server
+app.listen(process.env.PORT || 8888, function() {
+  console.log('Express Server listening on port 8888!');
+});
+
+app.get('/', function(request, response) {
+  response.send('Hello! Welcome to Jasper!');
+});
+
 // GET /api/logs/
-app.get('/api/logs', function (request, response) {
+app.get('/api/logs', function(request, response) {
   if (request.query.reverse === 'true') {
     response.send((tests.logs).reverse());
   }
@@ -21,6 +30,3 @@ app.get('/api/logs', function (request, response) {
     response.send(tests.logs);
   }
 });
-
-// Launch Server
-app.listen(process.env.PORT || 8888);
