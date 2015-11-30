@@ -14,9 +14,9 @@ var main = {
   baseUrl: 'http://orainteractive.com',
 
   // Run Tests Every So Often
-  // Default: Every 15 Minutes
+  // Default: Every 30 Minutes
   // Read up about Cron Syntax Here --> http://crontab.org/
-  testFrequency: '0 00,15,30,45 * * * *',
+  testFrequency: '0 00,30 * * * *',
 
   // Do you want to send email notifications?
   // Yes -> true      No -> false

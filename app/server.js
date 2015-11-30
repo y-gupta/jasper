@@ -5,9 +5,10 @@
 /*jslint node: true */
 'use strict';
 
+var util    = require('util');
 var request = require('request');
 var express = require('express');
-var app = express();
+var app     = express();
 var storage = require('node-persist');
     storage.initSync();
 
@@ -27,17 +28,17 @@ exports.runServer = runServer;
 setInterval(function() {
     request({
       urL: 'http://node-jasper.herokuapp.com'
-    }, function() {
-      console.log('Pinging server to keep it awake.');
+    }, function(err, res, body) {
+      util.log('Pinging server to keep it awake.');
     });
-}, 300000);
+}, 600000);
 
 // API Root Splash View
 app.get('/', function(req, res) {
   res.send('Hello! Welcome to Jasper!');
 });
 
-
+// ----------- API ----------
 app.get('/api/logs', function(req, res) {
   // GET /api/logs/
   if (req.query.reverse === 'true') {
