@@ -6,11 +6,17 @@
 'use strict';
 
 var util    = require('util');
+var Parse   = require('parse/node');
 var request = require('request');
 var express = require('express');
 var app     = express();
-var storage = require('node-persist');
-    storage.initSync();
+var config  = require('../app.config.js');
+
+// Parse Init
+var DetailedLogs = Parse.Object.extend("DetailedLogs");
+var detailedLogs = new DetailedLogs();
+
+Parse.initialize(config.parse.appId, config.parse.jsId);
 
 var tests = require('./app.js');
 
@@ -24,27 +30,52 @@ var runServer = function() {
 
 exports.runServer = runServer;
 
-// Workaround to Keep Heroku App From Falling Asleep
-// setInterval(function() {
-//     request({
-//       urL: 'http://node-jasper.herokuapp.com'
-//     }, function(err, res, body) {
-//       util.log('Pinging server to keep it awake.');
-//     });
-// }, 500000);
-
 // API Root Splash View
 app.get('/', function(req, res) {
   res.send('Hello! Welcome to Jasper!');
 });
 
 // ----------- API ----------
+// GET /api/logs
+// Returns array of objects for ALL logs
 app.get('/api/logs', function(req, res) {
-  // GET /api/logs/
-  if (req.query.reverse === 'true') {
-    res.send(tests.LOGS);
-  }
-  else {
-    res.send(tests.LOGS_REVERSE);
-  }
+  let logsArray = [];
+  var query = new Parse.Query(detailedLogs);
+
+  query.find({
+    success: function(results) {
+      util.log("GET /logs Returned " + results.length + " logs.");
+      for (var i = 0; i < results.length; i++) {
+        var object = results[i];
+        logsArray.push(object);
+      }
+      res.json(logsArray.reverse());
+    },
+    error: function(error) {
+      util.log("Parse Query Error: " + error.code + " " + error.message);
+    }
+  });
+});
+
+// GET /api/outages
+// Returns array of objects with logs for all recent outages/incidents
+app.get('/api/outages', function(req, res) {
+  let logsArray = [];
+  var query = new Parse.Query(detailedLogs);
+
+  query.greaterThan('summary.errors', 0);
+
+  query.find({
+    success: function(results) {
+      util.log("GET /outages: Returned " + results.length + " logs.");
+      for (var i = 0; i < results.length; i++) {
+        var object = results[i];
+        logsArray.push(object);
+      }
+      res.json(logsArray.reverse());
+    },
+    error: function(error) {
+      util.log("Parse Query Error: " + error.code + " " + error.message);
+    }
+  });
 });

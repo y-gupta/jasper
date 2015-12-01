@@ -10,16 +10,21 @@ var util = require('util');
 var request = require('request');
 var colors = require('colors');
 var emoji = require('node-emoji');
-var storage = require('node-persist');
 var moment = require('moment');
+var Parse = require('parse/node');
 var CronJob = require('cron').CronJob;
-
-// Init Local Storage
-storage.initSync();
 
 // Require app.config.js and notifications.js
 var config = require('../app.config.js');
 var notifications = require('./notifications.js');
+
+if (config.main.parseEnabled) {
+  // Parse Init
+  Parse.initialize(config.parse.appId, config.parse.jsId);
+
+  var DetailedLogs = Parse.Object.extend("DetailedLogs");
+  var detailedLogs = new DetailedLogs();
+}
 
 var runTests = function(callback) {
 
@@ -97,15 +102,19 @@ var runTests = function(callback) {
         failedPages: failedPages
       };
 
+      if (config.main.parseEnabled) {
+        // Save Log of Run to Parse
+        detailedLogs.save(status, {
+          success: function(detailedLogs) {
+            console.log('Test successfully saved to DB!');
+          },
+          error: function(detailedLogs, error) {
+            console.log('There was an error saving this test to the DB.' + error);
+          }
+        });
+      }
+
       exports.status = status;
-
-      // Save data from this run to server localStorage
-      storage.setItem((moment(startTime).format('MMMM Do YYYY, h:mm:ss a').toString()) + '.json', status);
-
-      const LOGS = storage.values();
-      const LOGS_REVERSE = storage.values().reverse();
-      exports.LOGS = LOGS;
-      exports.LOGS_REVERSE = LOGS_REVERSE;
 
       // All async methods complete
       clearInterval(isFinished);
