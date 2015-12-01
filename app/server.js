@@ -25,13 +25,13 @@ var runServer = function() {
 exports.runServer = runServer;
 
 // Workaround to Keep Heroku App From Falling Asleep
-setInterval(function() {
-    request({
-      urL: 'http://node-jasper.herokuapp.com'
-    }, function(err, res, body) {
-      util.log('Pinging server to keep it awake.');
-    });
-}, 600000);
+// setInterval(function() {
+//     request({
+//       urL: 'http://node-jasper.herokuapp.com'
+//     }, function(err, res, body) {
+//       util.log('Pinging server to keep it awake.');
+//     });
+// }, 500000);
 
 // API Root Splash View
 app.get('/', function(req, res) {

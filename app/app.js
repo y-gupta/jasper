@@ -50,7 +50,8 @@ var runTests = function(callback) {
     // Run async request to fetch the body data of that page
     request({
       url: config.main.baseUrl + val,
-      json: false
+      json: false,
+      timeout: 30000
     },
       // Callback
       function(error, response, body) {
