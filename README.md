@@ -19,17 +19,11 @@
 * Slack
 * SMS (via Twilio)
 
-## API
+## API (Still in Development)
 
 ### GET /api/logs
-Returns array of objects containing all test logs saved in persist folder. (JSON)
+Returns array of objects containing all test logs. (JSON)
 
-#### Params
-**reverse:**
-(default: false) | (Optional) | Truthy value returns array with newest values on bottom, oldest first.
-
-```
-localhost:8888/api/logs?reverse=true
-```
-
+### GET /api/outages
+Returns array of objects containing test logs for all cases of outages or incidents. (JSON)
 
