@@ -35,47 +35,77 @@ app.get('/', function(req, res) {
   res.send('Hello! Welcome to Jasper!');
 });
 
-// ----------- API ----------
+
+// ---------------- API ----------------
+
 // GET /api/logs
 // Returns array of objects for ALL logs
 app.get('/api/logs', function(req, res) {
-  let logsArray = [];
-  var query = new Parse.Query(detailedLogs);
 
-  query.find({
-    success: function(results) {
-      util.log("GET /logs Returned " + results.length + " logs.");
-      for (var i = 0; i < results.length; i++) {
-        var object = results[i];
-        logsArray.push(object);
+  // If user has Parse disabled in config
+  if (!config.main.parseEnabled || config.parse.appId === null || config.parse.jsId === null) {
+    res.json({
+      error: true,
+      message: 'There is a problem with your Parse configuration. Please make sure that you have parseEnabled set to true, and your APP ID + JavaScript ID are saved in app.config.js.',
+    });
+  }
+  // Parse config data valid, they should be good to go
+  else {
+    let logsArray = [];
+    var query = new Parse.Query(detailedLogs);
+
+    query.find({
+      success: function(data) {
+        util.log("GET /logs Returned " + data.length + " logs.");
+        for (var i = 0; i < data.length; i++) {
+          var object = data[i];
+          logsArray.push(object);
+        }
+        res.json(logsArray.reverse());
+      },
+      error: function(error) {
+        util.log("Parse Query Error: " + error.code + " " + error.message);
+        res.json({
+          error: true,
+          message: "Parse Query Error: " + error.code + " " + error.message
+        });
       }
-      res.json(logsArray.reverse());
-    },
-    error: function(error) {
-      util.log("Parse Query Error: " + error.code + " " + error.message);
-    }
-  });
+    });
+  }
 });
 
 // GET /api/outages
 // Returns array of objects with logs for all recent outages/incidents
 app.get('/api/outages', function(req, res) {
-  let logsArray = [];
-  var query = new Parse.Query(detailedLogs);
 
-  query.greaterThan('summary.errors', 0);
+  // If user has Parse disabled in config
+  if (!config.main.parseEnabled || config.parse.appId === null || config.parse.jsId === null) {
+    res.json({
+      error: true,
+      message: 'There is a problem with your Parse configuration. Please make sure that you have parseEnabled set to true, and your APP ID + JavaScript ID are saved in app.config.js.'
+    });
+  }
+  else {
+    let logsArray = [];
+    var query = new Parse.Query(detailedLogs);
 
-  query.find({
-    success: function(results) {
-      util.log("GET /outages: Returned " + results.length + " logs.");
-      for (var i = 0; i < results.length; i++) {
-        var object = results[i];
-        logsArray.push(object);
+    query.greaterThan('summary.errors', 0);
+    query.find({  
+      success: function(data) {
+        util.log("GET /outages: Returned " + data.length + " logs.");
+        for (var i = 0; i < data.length; i++) {
+          var object = data[i];
+          logsArray.push(object);
+        }
+        res.json(logsArray.reverse());
+      },
+      error: function(error) {
+        util.log("Parse Query Error: " + error.code + " " + error.message);
+        res.json({
+          error: true,
+          message: "Parse Query Error: " + error.code + " " + error.message
+        });
       }
-      res.json(logsArray.reverse());
-    },
-    error: function(error) {
-      util.log("Parse Query Error: " + error.code + " " + error.message);
-    }
-  });
+    });
+  }
 });

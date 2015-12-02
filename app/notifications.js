@@ -5,10 +5,9 @@
 /*jslint node: true */
 'use strict';
 
-var util = require('util');
-var emoji = require('node-emoji');
-
-var app = require('./app.js');
+var util   = require('util');
+var emoji  = require('node-emoji');
+var app    = require('./app.js');
 var config = require('../app.config.js');
 
 // ----- Notifications Function Tree -----
