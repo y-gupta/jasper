@@ -30,11 +30,8 @@ var runServer = function() {
 
 exports.runServer = runServer;
 
-// API Root Splash View
-app.get('/', function(req, res) {
-  res.send('Hello! Welcome to Jasper!');
-});
-
+// Render Static Views from the Public Directory/Views
+app.use('/', express.static(__dirname + '/../public/'));
 
 // ---------------- API ----------------
 
