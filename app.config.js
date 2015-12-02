@@ -18,6 +18,10 @@ var main = {
   // Read up about Cron Syntax Here --> http://crontab.org/
   testFrequency: '0 00,30 * * * *',
 
+  // Include Parse Database Integration?
+  // Sign up for Parse for free, and enter your app ID below in the parse section
+  parseEnabled: false,
+
   // Do you want to send email notifications?
   // Yes -> true      No -> false
   emailNotifications: false,
@@ -67,6 +71,21 @@ var bot = {
   name: 'Jasper',
   emoji: 'tophat',
 
+};
+
+
+var parse = {
+
+  // Jasper uses the Parse SDK as the database in the cloud
+  // In order to take advnatage of the Incident Logs + API features, the following info is required
+
+  // Application ID
+  // In your Parse Dashboard, Settings > Keys
+  appId: '',
+
+  // JavaScript Key
+  // Settings > Keys
+  jsId: ''
 };
 
 
@@ -151,6 +170,7 @@ var sms = {
 exports.main = main;
 exports.pages = pages;
 exports.bot = bot;
+exports.parse = parse;
 exports.email = email;
 exports.hipchat = hipchat;
 exports.slack = slack;

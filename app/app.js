@@ -10,16 +10,21 @@ var util = require('util');
 var request = require('request');
 var colors = require('colors');
 var emoji = require('node-emoji');
-var storage = require('node-persist');
 var moment = require('moment');
+var Parse = require('parse/node');
 var CronJob = require('cron').CronJob;
-
-// Init Local Storage
-storage.initSync();
 
 // Require app.config.js and notifications.js
 var config = require('../app.config.js');
 var notifications = require('./notifications.js');
+
+if (config.main.parseEnabled) {
+  // Parse Init
+  Parse.initialize(config.parse.appId, config.parse.jsId);
+
+  var DetailedLogs = Parse.Object.extend("DetailedLogs");
+  var detailedLogs = new DetailedLogs();
+}
 
 var runTests = function(callback) {
 
@@ -34,6 +39,9 @@ var runTests = function(callback) {
 
   // Empty array that holds failed config.pages
   var failedPages = [];
+
+  // Save all individual response times in an array
+  var responseTimes = [];
 
   // Get start time to track the time it took for each request
   const startTime = new Date().getTime();
@@ -57,6 +65,7 @@ var runTests = function(callback) {
       function(error, response, body) {
         counter++;
         let requestTime = (new Date().getTime()) - startTime;
+        responseTimes.push(requestTime);
         let warningCodes = [201, 400, 401, 404, 500];
 
         if (response.statusCode == 200 || response.statusCode == 304) {
@@ -86,6 +95,16 @@ var runTests = function(callback) {
       console.log(colors.yellow('Warnings: ' + warnings));
       console.log(colors.green.underline('Success: ' + successes + '\n'));
 
+      let totalResponse = 0;
+
+      // Calculate Sum of responseTimes and find average
+      responseTimes.forEach(function(val) {
+        totalResponse += val;
+      });
+
+      // Average
+      let averageResponseTime = parseInt((totalResponse / (config.pages).length).toFixed(2));
+
       // Store Status Object to be used in Persisted Storage/API
       status = {
         time: moment(startTime).format('x'),
@@ -94,18 +113,23 @@ var runTests = function(callback) {
           warnings: warnings,
           successes: successes
         },
-        failedPages: failedPages
+        failedPages: failedPages,
+        averageResponseTime: averageResponseTime
       };
 
+      if (config.main.parseEnabled) {
+        // Save Log of Run to Parse
+        detailedLogs.save(status, {
+          success: function(detailedLogs) {
+            console.log('Test successfully saved to DB!');
+          },
+          error: function(detailedLogs, error) {
+            console.log('There was an error saving this test to the DB.' + JSON.stringify(error));
+          }
+        });
+      }
+
       exports.status = status;
-
-      // Save data from this run to server localStorage
-      storage.setItem((moment(startTime).format('MMMM Do YYYY, h:mm:ss a').toString()) + '.json', status);
-
-      const LOGS = storage.values();
-      const LOGS_REVERSE = storage.values().reverse();
-      exports.LOGS = LOGS;
-      exports.LOGS_REVERSE = LOGS_REVERSE;
 
       // All async methods complete
       clearInterval(isFinished);
