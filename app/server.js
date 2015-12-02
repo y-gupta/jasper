@@ -90,7 +90,7 @@ app.get('/api/outages', function(req, res) {
     var query = new Parse.Query(detailedLogs);
 
     query.greaterThan('summary.errors', 0);
-    query.find({  
+    query.find({
       success: function(data) {
         util.log("GET /outages: Returned " + data.length + " logs.");
         for (var i = 0; i < data.length; i++) {

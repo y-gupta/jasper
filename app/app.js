@@ -40,6 +40,9 @@ var runTests = function(callback) {
   // Empty array that holds failed config.pages
   var failedPages = [];
 
+  // Save all individual response times in an array
+  var responseTimes = [];
+
   // Get start time to track the time it took for each request
   const startTime = new Date().getTime();
 
@@ -62,6 +65,7 @@ var runTests = function(callback) {
       function(error, response, body) {
         counter++;
         let requestTime = (new Date().getTime()) - startTime;
+        responseTimes.push(requestTime);
         let warningCodes = [201, 400, 401, 404, 500];
 
         if (response.statusCode == 200 || response.statusCode == 304) {
@@ -91,6 +95,16 @@ var runTests = function(callback) {
       console.log(colors.yellow('Warnings: ' + warnings));
       console.log(colors.green.underline('Success: ' + successes + '\n'));
 
+      let totalResponse = 0;
+
+      // Calculate Sum of responseTimes and find average
+      responseTimes.forEach(function(val) {
+        totalResponse += val;
+      });
+
+      // Average
+      let averageResponseTime = parseInt((totalResponse / (config.pages).length).toFixed(2));
+
       // Store Status Object to be used in Persisted Storage/API
       status = {
         time: moment(startTime).format('x'),
@@ -99,7 +113,8 @@ var runTests = function(callback) {
           warnings: warnings,
           successes: successes
         },
-        failedPages: failedPages
+        failedPages: failedPages,
+        averageResponseTime: averageResponseTime
       };
 
       if (config.main.parseEnabled) {
@@ -109,7 +124,7 @@ var runTests = function(callback) {
             console.log('Test successfully saved to DB!');
           },
           error: function(detailedLogs, error) {
-            console.log('There was an error saving this test to the DB.' + error);
+            console.log('There was an error saving this test to the DB.' + JSON.stringify(error));
           }
         });
       }
