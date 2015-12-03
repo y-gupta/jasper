@@ -35,6 +35,18 @@ app.use('/', express.static(__dirname + '/../public/'));
 
 // ---------------- API ----------------
 
+// GET /api/config
+app.get('/api/config', function(req, res) {
+  res.json({
+    main: {
+      baseUrl: config.main.baseUrl
+    },
+    pages: {
+      pages: config.pages
+    }
+  });
+});
+
 // GET /api/logs
 // Returns array of objects for ALL logs
 app.get('/api/logs', function(req, res) {

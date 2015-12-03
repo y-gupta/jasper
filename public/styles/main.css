@@ -3,4 +3,46 @@
 body {
   font-family: 'Lato';
   font-size: 18px;
+  background: linear-gradient(180deg, #6699ff, #0099cc);
+}
+
+.nav {
+  margin-top: 25px;
+}
+
+#title {
+  font-size: 36px;
+  color: white;
+  font-weight: 200;
+}
+
+.cta-button {
+  float: right;
+}
+
+.main-content {
+  margin-top: 100px;
+  color: black;
+}
+
+.big-label {
+  font-size: 20px;
+}
+
+.med-label {
+  font-size: 18px;
+  font-weight: 200;
+  color: white;
+}
+
+.failed-pages {
+  margin-top: 30px !important;
+}
+
+.green {
+  color: #00ff00;
+}
+
+.red {
+  color: red;
 }

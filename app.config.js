@@ -11,6 +11,7 @@
 var main = {
 
   // What is the base url you want to target?
+  // HTTP:// prefix is required
   baseUrl: 'http://orainteractive.com',
 
   // Run Tests Every So Often
@@ -20,7 +21,7 @@ var main = {
 
   // Include Parse Database Integration?
   // Sign up for Parse for free, and enter your app ID below in the parse section
-  parseEnabled: false,
+  parseEnabled: true,
 
   // Do you want to send email notifications?
   // Yes -> true      No -> false
@@ -81,12 +82,12 @@ var parse = {
 
   // Application ID
   // In your Parse Dashboard, Settings > Keys
-  appId: '',
+  appId: 'Z9gZwqyb8NXoZpk61hEXzjbbkIxaUcdJYU3Q9AB0',
 
   // JavaScript Key
   // Settings > Keys
-  jsId: ''
-  
+  jsId: 'KmovZhN8ESqM1x5bMnIWLHolO2nn6C7szpfmOI0d'
+
 };
 
 
