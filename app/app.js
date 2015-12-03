@@ -43,14 +43,14 @@ var runTests = function(callback) {
   // Save all individual response times in an array
   var responseTimes = [];
 
-  // Get start time to track the time it took for each request
-  const startTime = new Date().getTime();
-
 
   // ---------- Run The Tests! ----------
   util.log(colors.blue.bold(' --------- ' + emoji.get('rocket') + ' Running Tests ' + emoji.get('rocket') + ' ---------\n'));
 
   console.log(colors.underline('Page, StatusCode, Speed(ms)'));
+
+  // Get start time to track the time it took for each request
+  const startTime = new Date().getTime();
 
   // Begin looping through every page in config.pages array
   config.pages.forEach(function(val) {

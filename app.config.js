@@ -21,7 +21,7 @@ var main = {
 
   // Include Parse Database Integration?
   // Sign up for Parse for free, and enter your app ID below in the parse section
-  parseEnabled: true,
+  parseEnabled: false,
 
   // Do you want to send email notifications?
   // Yes -> true      No -> false
@@ -56,10 +56,6 @@ var pages = [
   // What pages do you want to test from the baseUrl?
   // Note: Jasper won't test the base url by itself, set '/' as a page to do that!
   '/',
-  '/studio',
-  '/process',
-  '/portfolio',
-  '/careers',
   '/blog'
 ];
 
@@ -82,11 +78,11 @@ var parse = {
 
   // Application ID
   // In your Parse Dashboard, Settings > Keys
-  appId: 'Z9gZwqyb8NXoZpk61hEXzjbbkIxaUcdJYU3Q9AB0',
+  appId: '',
 
   // JavaScript Key
   // Settings > Keys
-  jsId: 'KmovZhN8ESqM1x5bMnIWLHolO2nn6C7szpfmOI0d'
+  jsId: ''
 
 };
 

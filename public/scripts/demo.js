@@ -20,6 +20,10 @@ new Vue ({
           // Time
           var time = data[0].time / 1000;
           this.$set('lastUpdated', moment.unix(time).fromNow());
+          // Successes
+          this.$set('successes', data[0].summary.successes);
+          // Warnings
+          this.$set('warnings', data[0].summary.warnings);
           // Errors
           this.$set('errors', data[0].summary.errors);
           // FailedPages
@@ -34,7 +38,7 @@ new Vue ({
           }
           else {
             this.$set('isUp', true);
-            this.$set('message', 'Everything\'s Looking Good! Jasper is showing ' + data[0].summary.errors + ' issues. He will let you know if something comes up.');
+            this.$set('message', 'Everything\'s looking good! Jasper is showing ' + data[0].summary.errors + ' issues. Sit back and relax, we will let you know if something comes up.');
             this.$set('statusColor', 'green');
           }
         }
@@ -68,6 +72,8 @@ new Vue ({
     baseUrl: null,
     failedPages: null,
     isUp: null,
+    successes: null,
+    warnings: null,
     errors: null,
     lastUpdated: null,
     averageResponseTime: null

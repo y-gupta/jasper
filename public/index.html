@@ -9,12 +9,14 @@
   <body>
     <div class="ui container">
       <div class="nav">
-        <span id="title">Jasper Dashboard</span>
+        <span id="title">Jasper</span>
         <button class="ui inverted white button cta-button">Manage Settings</button>
       </div>
 
 
       <div class="main-content">
+
+        <h2 class="title-center">Dashboard</h2>
 
         <!-- <span class="med-label">{{ baseUrl }}</span> -->
         <div class="ui segment">
@@ -22,9 +24,10 @@
           <span class="ui right floated header" v-show="configSuccess">Last Updated: {{ lastUpdated }}</span>
           <div class="ui clearing divider"></div>
 
-          <span class="big-label message"><i class="fa fa-circle {{ statusColor }}"></i> {{ message }}</span>
+          <div class="current-status">
+            <span class="big-label message"><i class="fa fa-circle {{ statusColor }}" v-show="statusColor"></i> {{ message }}</span>
+          </div>
 
-          <!-- <span class="big-label" v-if="!isUp"><i class="fa fa-circle" style="color: red;"></i> <strong>Uh oh!</strong> There is currently {{ errors }} issue(s) with {{ baseUrl }}.</span> -->
           <div class="ui middle aligned divided list failed-pages">
             <div class="item" v-for="page in failedPages">
               <div class="right floated content">
@@ -43,6 +46,18 @@
           <div class="ui clearing divider"></div>
 
           <table class="ui celled table">
+            <tr>
+              <td>Sucessful</td>
+              <td>{{ successes }}</td>
+            </tr>
+            <tr>
+              <td>Warnings</td>
+              <td>{{ warnings }}</td>
+            </tr>
+            <tr>
+              <td>Errors</td>
+              <td>{{ errors }}</td>
+            </tr>
             <tr>
               <td>Average Page Response Time</td>
               <td>{{ averageResponseTime }} ms</td>

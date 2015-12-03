@@ -6,14 +6,25 @@ body {
   background: linear-gradient(180deg, #6699ff, #0099cc);
 }
 
+.hidden {
+  display: none;
+}
+
 .nav {
   margin-top: 25px;
 }
 
 #title {
+  font-size: 48px;
+  color: white;
+  font-weight: 200;
+}
+
+.title-center {
   font-size: 36px;
   color: white;
   font-weight: 200;
+  text-align: center;
 }
 
 .cta-button {
@@ -21,7 +32,7 @@ body {
 }
 
 .main-content {
-  margin-top: 100px;
+  margin-top: 80px;
   color: black;
 }
 
@@ -35,8 +46,8 @@ body {
   color: white;
 }
 
-.message {
-  margin-top: 20px;
+.current-status {
+  padding-top: 10px;
 }
 
 .failed-pages {
