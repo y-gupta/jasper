@@ -34,7 +34,7 @@ new Vue ({
           }
           else {
             this.$set('isUp', true);
-            this.$set('message', 'Everything\'s Looking Good! Jasper is showing ' + data[0].summary.errors + ' issues. He\'ll let you know if something comes up.');
+            this.$set('message', 'Everything\'s Looking Good! Jasper is showing ' + data[0].summary.errors + ' issues. He will let you know if something comes up.');
             this.$set('statusColor', 'green');
           }
         }
