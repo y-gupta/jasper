@@ -13,7 +13,6 @@ new Vue ({
         }
         // success
         else {
-          console.log(data);
           // set data
           this.$set('success', true);
           this.$set('configSuccess', true);
@@ -55,12 +54,26 @@ new Vue ({
         }
         // success
         else {
-          console.log(data);
           this.$set('baseUrl', data.main.baseUrl);
         }
     })
     .error(function(data, status, request) {
       console.log(status);
+    });
+
+    // GET /outages
+    this.$http.get('api/outages/', function(data, status, request) {
+      for (var i = 0; i < 3; i++) {
+        var time = moment.unix(data[i].time / 1000).format('MMMM Do YYYY, h:mm:ss a');
+        var object = {
+          data: data[i]
+        };
+        object.time = time ;
+        this.outages.push(object);
+      }
+    })
+    .error(function(data, status, request) {
+
     });
   },
 
@@ -76,7 +89,8 @@ new Vue ({
     warnings: null,
     errors: null,
     lastUpdated: null,
-    averageResponseTime: null
+    averageResponseTime: null,
+    outages: []
   }
 });
 

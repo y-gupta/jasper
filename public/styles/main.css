@@ -3,7 +3,7 @@
 body {
   font-family: 'Lato';
   font-size: 18px;
-  background: linear-gradient(180deg, #6699ff, #0099cc);
+  background: #6699ff;
 }
 
 .hidden {
@@ -21,7 +21,7 @@ body {
 }
 
 .title-center {
-  font-size: 36px;
+  font-size: 56px;
   color: white;
   font-weight: 200;
   text-align: center;
@@ -30,6 +30,10 @@ body {
 
 .cta-button {
   float: right;
+}
+
+.white-link {
+  color: white;
 }
 
 .main-content {
@@ -61,4 +65,17 @@ body {
 
 .red {
   color: red;
+}
+
+.recent-outages {
+  margin-top: 10px;
+}
+
+.header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.container {
+  margin-bottom: 20px;
 }
