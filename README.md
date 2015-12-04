@@ -1,5 +1,3 @@
-![travis](https://travis-ci.org/tjhillard/jasper.svg?branch=develop)
-
 # Jasper
 :tophat: A simple node app that notifies you when specified webpages are down
 
@@ -22,8 +20,11 @@
 ## API (Still in Development)
 
 ### GET /api/logs
-Returns array of objects containing all test logs. (JSON)
+Returns array of objects containing all test logs.
 
 ### GET /api/outages
-Returns array of objects containing test logs for all cases of outages or incidents. (JSON)
+Returns array of objects containing test logs for all cases of outages or incidents.
+
+### GET /api/config
+Returns object with config variables for baseUrl and pages array.
 
