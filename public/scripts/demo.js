@@ -79,3 +79,13 @@ new Vue ({
     averageResponseTime: null
   }
 });
+
+// Hover Popup
+$('.circle')
+  .popup({
+    position : 'top center',
+    target   : '.circle',
+    title    : 'Response Times',
+    content  : 'This speed reflects the time in miliseconds that it took the server to fetch the body content of the specified site. If you are testing manually on your own you may notice discrepencies based off of client/server locations.'
+  })
+;
