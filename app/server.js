@@ -30,13 +30,22 @@ var runServer = function() {
 
 exports.runServer = runServer;
 
-// API Root Splash View
-app.get('/', function(req, res) {
-  res.send('Hello! Welcome to Jasper!');
-});
-
+// Render Static Views from the Public Directory/Views
+app.use('/', express.static(__dirname + '/../public/'));
 
 // ---------------- API ----------------
+
+// GET /api/config
+app.get('/api/config', function(req, res) {
+  res.json({
+    main: {
+      baseUrl: config.main.baseUrl
+    },
+    pages: {
+      pages: config.pages
+    }
+  });
+});
 
 // GET /api/logs
 // Returns array of objects for ALL logs

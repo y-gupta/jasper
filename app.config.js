@@ -11,6 +11,7 @@
 var main = {
 
   // What is the base url you want to target?
+  // HTTP:// prefix is required
   baseUrl: 'http://orainteractive.com',
 
   // Run Tests Every So Often
@@ -55,10 +56,6 @@ var pages = [
   // What pages do you want to test from the baseUrl?
   // Note: Jasper won't test the base url by itself, set '/' as a page to do that!
   '/',
-  '/studio',
-  '/process',
-  '/portfolio',
-  '/careers',
   '/blog'
 ];
 
@@ -86,6 +83,7 @@ var parse = {
   // JavaScript Key
   // Settings > Keys
   jsId: ''
+
 };
 
 
