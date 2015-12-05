@@ -4,7 +4,7 @@
 ## CLI
 ![JasperDemo](http://i.imgur.com/PUNaX5Y.png)
 
-## Dashboard/GUI
+## Dashboard
 ![JasperUI](http://i.imgur.com/glbajeu.png)
 
 ## Usage
