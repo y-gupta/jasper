@@ -11,6 +11,8 @@
 
 3. To run the app, type ```npm run jasper```. By default, Jasper runs tests every 15 minutes. If you are experiencing issues getting up and running, try ```npm run doctor``` or open a GitHub issue.
 
+A full Getting Started guide including steps to deploy application to Heroku/AWS are currently in the works.
+
 ## Notification Options
 * Email
 * HipChat
