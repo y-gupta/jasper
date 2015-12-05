@@ -1,7 +1,11 @@
 # Jasper
 :tophat: A simple node app that notifies you when specified webpages are down
 
+## CLI
 ![JasperDemo](http://i.imgur.com/PUNaX5Y.png)
+
+## Dashboard/GUI
+![JasperUI](http://i.imgur.com/glbajeu.png)
 
 ## Usage
 1. Install all of the project dependencies via
@@ -10,8 +14,6 @@
 2. Then, in ```config.app.js``` start customizing as much or as little as you want!
 
 3. To run the app, type ```npm run jasper```. By default, Jasper runs tests every 15 minutes. If you are experiencing issues getting up and running, try ```npm run doctor``` or open a GitHub issue.
-
-A full Getting Started guide including steps to deploy application to Heroku/AWS are currently in the works.
 
 ## Notification Options
 * Email
