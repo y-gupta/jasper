@@ -13,7 +13,7 @@
 
 2. Then, in ```config.app.js``` start customizing as much or as little as you want!
 
-3. To run the app, type ```npm run jasper```. By default, Jasper runs tests every 15 minutes. If you are experiencing issues getting up and running, try ```npm run doctor``` or open a GitHub issue.
+3. To run the app, type ```npm run jasper```. By default, Jasper runs tests every 30 minutes. If you are experiencing issues getting up and running, try ```npm run doctor``` or open a GitHub issue.
 
 ## Notification Options
 * Email
@@ -21,7 +21,7 @@
 * Slack
 * SMS (via Twilio)
 
-## API (Still in Development)
+## API
 
 ### GET /api/logs
 Returns array of objects containing all test logs.
