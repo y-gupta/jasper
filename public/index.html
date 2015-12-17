@@ -9,8 +9,10 @@
   <body>
     <div class="ui container">
       <div class="nav">
-        <span id="title">Jasper</span>
-        <button class="ui inverted white button cta-button"><a href="https://github.com/tjhillard/jasper" class="white-link">Documentation</a></button>
+        <span id="title">{{ config.botName }}</span>
+      <a href="https://github.com/tjhillard/jasper" class="white-link" target="_blank">
+        <button class="ui inverted white button cta-button">Documentation</button>
+      </a>
       </div>
 
 
@@ -61,6 +63,13 @@
           </table>
         </div>
       </div>
+
+      <!-- One day a chart will go here -->
+      <!-- <div class="ui segment">
+        <h2 class="ui left floated header">Response Times</h2>
+        <div class="ui clearing divider"></div>
+        <canvas id="responseTimeChart" width="400" height="400"></canvas>
+      </div> -->
 
       <div class="ui segment" v-show="configSuccess">
         <h2 class="ui left floated header" v-show="configSuccess">Recent Outages</h2>

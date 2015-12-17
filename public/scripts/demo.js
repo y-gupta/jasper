@@ -55,6 +55,7 @@ new Vue ({
         // success
         else {
           this.$set('config.baseUrl', data.main.baseUrl);
+          this.$set('config.botName', data.bot.name);
         }
     })
     .error(function(data, status, request) {
@@ -65,10 +66,8 @@ new Vue ({
     this.$http.get('api/outages/', function(data, status, request) {
       if (data.length <= 0) {
         this.$set('outages.isEmpty', true);
-        console.log('isEmpty true');
       }
       else {
-        console.log('isEmpty > false');
         this.$set('outages.isEmpty', false);
         for (var i = 0; i < data.length; i++) {
           var time = moment.unix(data[i].time / 1000).format('MMMM Do YYYY, h:mm:ss a');
@@ -77,7 +76,6 @@ new Vue ({
           };
           object.time = time;
           this.outages.list.push(object);
-          console.log(this.outages.list);
         }
       }
 
@@ -106,7 +104,8 @@ new Vue ({
       averageResponseTime: null
     },
     config: {
-      baseUrl: ''
+      baseUrl: '',
+      botName: ''
     },
     outages: {
       list: [],

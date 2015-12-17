@@ -41,6 +41,9 @@ app.get('/api/config', function(req, res) {
     main: {
       baseUrl: config.main.baseUrl
     },
+    bot: {
+      name: config.bot.name
+    },
     pages: {
       pages: config.pages
     }
@@ -84,7 +87,7 @@ app.get('/api/logs', function(req, res) {
 });
 
 // GET /api/outages
-// Returns array of objects with logs for all recent outages/incidents
+// Returns array of objects with logs for {{ the last 3 }} recent outages/incidents
 app.get('/api/outages', function(req, res) {
 
   // If user has Parse disabled in config
